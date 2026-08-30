@@ -106,7 +106,7 @@ export type HeroSection = {
   _type: "heroSection";
   eyebrow?: string;
   heading: string;
-  subheading?: string;
+  body?: BlockContent;
   ctas?: Array<{
     _key: string;
   } & Button>;
@@ -174,10 +174,8 @@ export type BlockContentTextOnly = Array<{
   style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
-    href?: string;
-    _type: "link";
     _key: string;
-  }>;
+  } & Link>;
   level?: number;
   _type: "block";
   _key: string;

@@ -23,7 +23,12 @@ export const heroSection = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({name: 'subheading', title: 'Subheading', type: 'text', rows: 2}),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'blockContent',
+      description: 'Supporting copy shown beneath the heading.',
+    }),
     defineField({
       name: 'ctas',
       title: 'Buttons',
