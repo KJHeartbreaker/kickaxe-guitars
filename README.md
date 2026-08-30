@@ -89,8 +89,39 @@ You have the freedom to deploy your Next.js app to your hosting provider of choi
 
 1. Create a GitHub repository from this project. [Learn more](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
 2. Create a new Vercel project and connect it to your Github repository.
-3. Set the `Root Directory` to your Next.js app.
-4. Configure your Environment Variables.
+3. Set the `Root Directory` to `web` (this is a monorepo — the Next.js app lives in `web/`, not the repo root).
+4. Configure your Environment Variables (see `web/.env.example`):
+
+   | Variable | Required | Notes |
+   | --- | --- | --- |
+   | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Yes | Your Sanity project ID |
+   | `NEXT_PUBLIC_SANITY_DATASET` | Yes | e.g. `production` |
+   | `NEXT_PUBLIC_SANITY_API_VERSION` | No | Defaults to the value in `web/sanity/lib/api.ts` |
+   | `NEXT_PUBLIC_SANITY_STUDIO_URL` | Recommended | Your **deployed** Studio URL, e.g. `https://kickaxe-guitars.sanity.studio`. Drives visual-editing / "Open in Studio" links; falls back to `http://localhost:3333`, so leave it unset only for local dev |
+   | `SANITY_API_READ_TOKEN` | Yes | Read token; required for draft content and Presentation mode |
+
+   There is no bulk "import .env" command in the Vercel CLI, but you can avoid
+   copy/pasting each value one at a time in two ways:
+
+   - **Dashboard:** in Project → Settings → Environment Variables, paste an entire
+     `KEY=VALUE` block into the name field — Vercel splits it into individual variables.
+   - **CLI:** `vercel env add` reads values from stdin, so you can push a local file
+     in one loop:
+
+     ```shell
+     cd web
+     vercel link                      # link this directory to your Vercel project (once)
+
+     # push every var from .env.local into the Production environment
+     grep -v '^#' .env.local | grep -v '^$' | while IFS= read -r line; do
+       name="${line%%=*}"
+       value="${line#*=}"; value="${value%\"}"; value="${value#\"}"
+       printf '%s' "$value" | vercel env add "$name" production
+     done
+     ```
+
+   Repeat for the `preview` / `development` environments as needed, and use
+   `vercel env pull` to sync variables back down to a new machine.
 
 #### 3. Invite a collaborator
 
