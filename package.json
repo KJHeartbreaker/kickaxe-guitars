@@ -13,24 +13,19 @@
   "bugs": {
     "url": "https://github.com/sanity-io/sanity-template-nextjs-clean/issues"
   },
-  "workspaces": [
-    "studio",
-    "frontend"
-  ],
   "scripts": {
     "dev": "turbo dev",
-    "dev:next": "npm run dev --workspace=frontend",
-    "dev:studio": "npm run dev --workspace=studio",
+    "dev:next": "pnpm --filter web dev",
+    "dev:studio": "pnpm --filter studio dev",
     "format": "prettier --cache --write .",
-    "import-sample-data": "cd studio && sanity dataset import sample-data.tar.gz --dataset production --replace",
-    "lint": "npm run lint --workspace=frontend",
-    "type-check": "npm run type-check --workspaces"
+    "import-sample-data": "pnpm --filter studio exec sanity dataset import sample-data.tar.gz --dataset production --replace",
+    "lint": "pnpm --filter web lint",
+    "type-check": "pnpm -r type-check"
   },
-  "packageManager": "npm@11.6.2",
+  "packageManager": "pnpm@11.25.0",
   "prettier": "@sanity/prettier-config",
   "devDependencies": {
     "@sanity/prettier-config": "^3.0.0",
-    "npm-run-all2": "^5.0.2",
     "prettier": "^3.8.3",
     "turbo": "^2.10.2"
   }

@@ -17,7 +17,7 @@ Clone the repository that was created in your GitHub account and install depende
 ```shell
 git clone <your-new-repo-url>
 cd <your-repo-name>
-npm install
+pnpm install
 ```
 
 ## Step 3. Pull environment variables
@@ -25,13 +25,13 @@ npm install
 Link your local project to your Vercel project and pull the environment variables:
 
 ```shell
-cd frontend && npx vercel link && npx vercel env pull .env.local && cd ..
+cd web && pnpm dlx vercel link && pnpm dlx vercel env pull .env.local && cd ..
 ```
 
 The Vercel integration provisions environment variables for both the Next.js frontend (`NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_READ_TOKEN`, etc.) and Sanity Studio (`SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, etc.). Since each app only reads the variables it needs, you can use the same `.env.local` file for both:
 
 ```shell
-cp frontend/.env.local studio/.env.local
+cp web/.env.local studio/.env.local
 ```
 
 ## Step 4. Run locally
@@ -39,7 +39,7 @@ cp frontend/.env.local studio/.env.local
 From the project root, start both the Next.js app and Sanity Studio:
 
 ```shell
-npm run dev
+pnpm dev
 ```
 
 - Next.js runs on [http://localhost:3000](http://localhost:3000)
@@ -52,7 +52,7 @@ Sign in to the Studio with the same account you used during the Vercel/Sanity se
 To get started quickly with pre-built content, run:
 
 ```shell
-npm run import-sample-data
+pnpm import-sample-data
 ```
 
 ## Step 6. Deploy Sanity Studio
@@ -60,7 +60,7 @@ npm run import-sample-data
 Deploy the Studio so your team can access it online:
 
 ```shell
-cd studio && npx sanity deploy
+pnpm --filter studio deploy
 ```
 
 You will be prompted to choose a hostname (e.g., `your-project.sanity.studio`).

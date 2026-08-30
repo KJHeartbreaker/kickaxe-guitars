@@ -1,6 +1,6 @@
 import {Suspense} from 'react'
 import Link from 'next/link'
-import {PortableText} from '@portabletext/react'
+import {PortableText} from 'next-sanity'
 
 import {AllPosts} from '@/app/components/Posts'
 import GetStartedCode from '@/app/components/GetStartedCode'

@@ -1,6 +1,6 @@
 /**
  * Sanity CLI Configuration for Frontend
- * This file configures typegen for the frontend workspace.
+ * This file configures typegen for the web workspace.
  * Learn more: https://www.sanity.io/docs/cli
  */
 
