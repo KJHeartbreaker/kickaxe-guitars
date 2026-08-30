@@ -34,8 +34,8 @@ const homeLocation = {
 // path for different document types and used in the presentation tool.
 function resolveHref(documentType?: string, slug?: string): string | undefined {
   switch (documentType) {
-    case 'post':
-      return slug ? `/posts/${slug}` : undefined
+    case 'homePage':
+      return '/'
     case 'page':
       return slug ? `/${slug}` : undefined
     default:
@@ -43,6 +43,9 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
       return undefined
   }
 }
+
+// Singleton documents: exactly one of each, so creation/duplication/deletion is disabled.
+const SINGLETON_TYPES = new Set(['settings', 'navigation', 'footer', 'homePage'])
 
 // Main Sanity configuration
 export default defineConfig({
@@ -66,15 +69,11 @@ export default defineConfig({
         mainDocuments: defineDocuments([
           {
             route: '/',
-            filter: `_type == "settings" && _id == "siteSettings"`,
+            filter: `_type == "homePage"`,
           },
           {
             route: '/:slug',
             filter: `_type == "page" && slug.current == $slug || _id == $slug`,
-          },
-          {
-            route: '/posts/:slug',
-            filter: `_type == "post" && slug.current == $slug || _id == $slug`,
           },
         ]),
         // Locations Resolver API allows you to define where data is being used in your application. https://www.sanity.io/docs/visual-editing/presentation-resolver-api#8d8bca7bfcd7
@@ -98,23 +97,10 @@ export default defineConfig({
               ],
             }),
           }),
-          post: defineLocations({
-            select: {
-              title: 'title',
-              slug: 'slug.current',
-            },
-            resolve: (doc) => ({
-              locations: [
-                {
-                  title: doc?.title || 'Untitled',
-                  href: resolveHref('post', doc?.slug)!,
-                },
-                {
-                  title: 'Home',
-                  href: '/',
-                } satisfies DocumentLocation,
-              ].filter(Boolean) as DocumentLocation[],
-            }),
+          homePage: defineLocations({
+            locations: [homeLocation],
+            message: 'This is the site home page',
+            tone: 'positive',
           }),
         },
       },
@@ -131,5 +117,15 @@ export default defineConfig({
   // Schema configuration, imported from ./src/schemaTypes/index.ts
   schema: {
     types: schemaTypes,
+  },
+
+  // Lock singletons: no create/duplicate/delete, only publish/discard/restore.
+  document: {
+    actions: (prev, {schemaType}) =>
+      SINGLETON_TYPES.has(schemaType)
+        ? prev.filter(
+            ({action}) => action && ['publish', 'discardChanges', 'restore'].includes(action),
+          )
+        : prev,
   },
 })

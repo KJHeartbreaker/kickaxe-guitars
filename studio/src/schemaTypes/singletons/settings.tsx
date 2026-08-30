@@ -1,167 +1,109 @@
 import {CogIcon} from '@sanity/icons/Cog'
-import {defineArrayMember, defineField, defineType} from 'sanity'
-import type {Link, Settings} from '../../../sanity.types'
-
-import * as demo from '../../lib/initialValues'
+import {defineField, defineType} from 'sanity'
 
 /**
- * Settings schema Singleton.  Singletons are single documents that are displayed not in a collection, handy for things like site settings and other global configurations.
+ * Site-wide settings singleton: general info, default SEO/share, the promo bar
+ * and the cookie-consent notice. Navigation and footer are separate singletons.
  * Learn more: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
  */
 
 export const settings = defineType({
   name: 'settings',
-  title: 'Settings',
+  title: 'Site Settings',
   type: 'document',
   icon: CogIcon,
+  groups: [
+    {name: 'general', title: 'General', default: true},
+    {name: 'seo', title: 'SEO'},
+    {name: 'promo', title: 'Promo Bar'},
+    {name: 'cookie', title: 'Cookie Notice'},
+  ],
   fields: [
     defineField({
       name: 'title',
-      description: 'This field is the title of your blog.',
-      title: 'Title',
+      title: 'Site title',
       type: 'string',
-      initialValue: demo.title,
-      validation: (rule) => rule.required(),
+      description: 'The name of the site, used in the browser tab and metadata.',
+      group: 'general',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'description',
-      description: 'Used on the Homepage',
-      title: 'Description',
-      type: 'array',
-      initialValue: demo.description,
-      of: [
-        // Define a minified block content field for the description. https://www.sanity.io/docs/block-content
-        defineArrayMember({
-          type: 'block',
-          options: {},
-          styles: [],
-          lists: [],
-          marks: {
-            decorators: [],
-            annotations: [
-              {
-                name: 'link',
-                type: 'object',
-                title: 'Link',
-                fields: [
-                  defineField({
-                    name: 'linkType',
-                    title: 'Link Type',
-                    type: 'string',
-                    initialValue: 'href',
-                    options: {
-                      list: [
-                        {title: 'URL', value: 'href'},
-                        {title: 'Page', value: 'page'},
-                        {title: 'Post', value: 'post'},
-                      ],
-                      layout: 'radio',
-                    },
-                  }),
-                  defineField({
-                    name: 'href',
-                    title: 'URL',
-                    type: 'url',
-                    hidden: ({parent}) => parent?.linkType !== 'href' && parent?.linkType != null,
-                    validation: (Rule) =>
-                      Rule.custom((value, context) => {
-                        const parent = context.parent as Link
-                        if (parent?.linkType === 'href' && !value) {
-                          return 'URL is required when Link Type is URL'
-                        }
-                        return true
-                      }),
-                  }),
-                  defineField({
-                    name: 'page',
-                    title: 'Page',
-                    type: 'reference',
-                    to: [{type: 'page'}],
-                    hidden: ({parent}) => parent?.linkType !== 'page',
-                    validation: (Rule) =>
-                      Rule.custom((value, context) => {
-                        const parent = context.parent as Link
-                        if (parent?.linkType === 'page' && !value) {
-                          return 'Page reference is required when Link Type is Page'
-                        }
-                        return true
-                      }),
-                  }),
-                  defineField({
-                    name: 'post',
-                    title: 'Post',
-                    type: 'reference',
-                    to: [{type: 'post'}],
-                    hidden: ({parent}) => parent?.linkType !== 'post',
-                    validation: (Rule) =>
-                      Rule.custom((value, context) => {
-                        const parent = context.parent as Link
-                        if (parent?.linkType === 'post' && !value) {
-                          return 'Post reference is required when Link Type is Post'
-                        }
-                        return true
-                      }),
-                  }),
-                  defineField({
-                    name: 'openInNewTab',
-                    title: 'Open in new tab',
-                    type: 'boolean',
-                    initialValue: false,
-                  }),
-                ],
-              },
-            ],
-          },
+      name: 'siteUrl',
+      title: 'Site URL',
+      type: 'url',
+      description: 'The production URL, used for canonical links and sitemaps.',
+      group: 'general',
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      type: 'image',
+      group: 'general',
+      options: {hotspot: false},
+    }),
+    defineField({
+      name: 'metaTitle',
+      title: 'Default meta title',
+      type: 'string',
+      group: 'seo',
+      validation: (Rule) => Rule.max(60).warning('Longer titles may be truncated.'),
+    }),
+    defineField({
+      name: 'metaDescription',
+      title: 'Default meta description',
+      type: 'text',
+      rows: 3,
+      group: 'seo',
+      validation: (Rule) => Rule.max(160).warning('Longer descriptions may be truncated.'),
+    }),
+    defineField({
+      name: 'ogImage',
+      title: 'Default social share image',
+      type: 'image',
+      description: 'Fallback image for social cards and search results (1200×630).',
+      group: 'seo',
+      options: {hotspot: true, aiAssist: {imageDescriptionField: 'alt'}},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          description: 'Important for accessibility and SEO.',
+          validation: (Rule) =>
+            Rule.custom((alt, context) => {
+              const parent = context.parent as {asset?: {_ref?: string}}
+              return parent?.asset?._ref && !alt ? 'Required' : true
+            }),
         }),
       ],
     }),
     defineField({
-      name: 'ogImage',
-      title: 'Open Graph Image',
-      type: 'image',
-      description: 'Displayed on social cards and search engine results.',
-      options: {
-        hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
-      },
+      name: 'promoBar',
+      title: 'Promo Bar',
+      type: 'object',
+      group: 'promo',
+      options: {collapsible: false},
       fields: [
-        defineField({
-          name: 'alt',
-          description: 'Important for accessibility and SEO.',
-          title: 'Alternative text',
-          type: 'string',
-          validation: (rule) => {
-            return rule.custom((alt, context) => {
-              const document = context.document as Settings
-              if (document?.ogImage?.asset?._ref && !alt) {
-                return 'Required'
-              }
-              return true
-            })
-          },
-        }),
-        defineField({
-          name: 'metadataBase',
-          type: 'url',
-          description: (
-            <a
-              href="https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase"
-              rel="noreferrer noopener"
-            >
-              More information
-            </a>
-          ),
-        }),
+        defineField({name: 'enabled', title: 'Show promo bar', type: 'boolean', initialValue: false}),
+        defineField({name: 'text', title: 'Text', type: 'string'}),
+        defineField({name: 'link', title: 'Link', type: 'link'}),
+      ],
+    }),
+    defineField({
+      name: 'cookieConsent',
+      title: 'Cookie Notice',
+      type: 'object',
+      group: 'cookie',
+      options: {collapsible: false},
+      fields: [
+        defineField({name: 'message', title: 'Message', type: 'text', rows: 2}),
+        defineField({name: 'link', title: 'Policy link', type: 'link'}),
       ],
     }),
   ],
   preview: {
     prepare() {
-      return {
-        title: 'Settings',
-      }
+      return {title: 'Site Settings'}
     },
   },
 })

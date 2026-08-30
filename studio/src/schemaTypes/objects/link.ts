@@ -3,8 +3,8 @@ import {LinkIcon} from '@sanity/icons/Link'
 import type {Link} from '../../../sanity.types'
 
 /**
- * Link schema object. This link object lets the user first select the type of link and then
- * then enter the URL, page reference, or post reference - depending on the type selected.
+ * Link object. The editor first picks the link type, then provides either an
+ * external URL or an internal reference (a page or the home page).
  * Learn more: https://www.sanity.io/docs/studio/object-type
  */
 
@@ -18,12 +18,11 @@ export const link = defineType({
       name: 'linkType',
       title: 'Link Type',
       type: 'string',
-      initialValue: 'url',
+      initialValue: 'href',
       options: {
         list: [
           {title: 'URL', value: 'href'},
-          {title: 'Page', value: 'page'},
-          {title: 'Post', value: 'post'},
+          {title: 'Internal page', value: 'page'},
         ],
         layout: 'radio',
       },
@@ -32,9 +31,9 @@ export const link = defineType({
       name: 'href',
       title: 'URL',
       type: 'url',
-      hidden: ({parent}) => parent?.linkType !== 'href',
+      description: 'External link, e.g. https://reverb.com/…',
+      hidden: ({parent}) => parent?.linkType !== 'href' && parent?.linkType != null,
       validation: (Rule) =>
-        // Custom validation to ensure URL is provided if the link type is 'href'
         Rule.custom((value, context) => {
           const parent = context.parent as Link
           if (parent?.linkType === 'href' && !value) {
@@ -45,32 +44,15 @@ export const link = defineType({
     }),
     defineField({
       name: 'page',
-      title: 'Page',
+      title: 'Internal page',
       type: 'reference',
-      to: [{type: 'page'}],
+      to: [{type: 'page'}, {type: 'homePage'}],
       hidden: ({parent}) => parent?.linkType !== 'page',
       validation: (Rule) =>
-        // Custom validation to ensure page reference is provided if the link type is 'page'
         Rule.custom((value, context) => {
           const parent = context.parent as Link
           if (parent?.linkType === 'page' && !value) {
-            return 'Page reference is required when Link Type is Page'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'post',
-      title: 'Post',
-      type: 'reference',
-      to: [{type: 'post'}],
-      hidden: ({parent}) => parent?.linkType !== 'post',
-      validation: (Rule) =>
-        // Custom validation to ensure post reference is provided if the link type is 'post'
-        Rule.custom((value, context) => {
-          const parent = context.parent as Link
-          if (parent?.linkType === 'post' && !value) {
-            return 'Post reference is required when Link Type is Post'
+            return 'Page reference is required when Link Type is Internal page'
           }
           return true
         }),
