@@ -126,12 +126,19 @@ function gridToBlocks(m) {
     if (a.hasImage && !a.hasText && b.hasText && !b.hasImage)
       return [mediaTextBlock(a.images[0], colContent(cols[1]), 'left')]
   }
-  const out = []
-  for (const col of cols) {
-    const content = normPT(colContent(col))
-    if (hasText(content)) out.push({_key: key(), _type: 'richTextSection', content})
+  // Multiple text columns -> a curated Columns block; a single column -> rich text.
+  const filled = cols.map((c) => normPT(colContent(c))).filter((content) => hasText(content))
+  if (filled.length >= 2) {
+    return [
+      {
+        _key: key(),
+        _type: 'columnsSection',
+        columns: filled.map((content) => ({_key: key(), _type: 'column', content})),
+      },
+    ]
   }
-  return out
+  if (filled.length === 1) return [{_key: key(), _type: 'richTextSection', content: filled[0]}]
+  return []
 }
 
 function mapModules(modules) {

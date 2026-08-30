@@ -16,6 +16,7 @@ export const pageBuilderMembers = [
   defineArrayMember({type: 'marquee'}),
   defineArrayMember({type: 'accordionList'}),
   defineArrayMember({type: 'contactFormSection'}),
+  defineArrayMember({type: 'columnsSection'}),
   defineArrayMember({type: 'callToAction'}),
 ]
 

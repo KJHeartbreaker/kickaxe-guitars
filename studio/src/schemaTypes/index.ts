@@ -28,6 +28,7 @@ import {dividerImage} from './objects/blocks/dividerImage'
 import {marquee} from './objects/blocks/marquee'
 import {accordionList} from './objects/blocks/accordionList'
 import {contactFormSection} from './objects/blocks/contactFormSection'
+import {columnsSection} from './objects/blocks/columnsSection'
 import {callToAction} from './objects/callToAction'
 
 // Export an array of all the schema types. This is used in the Sanity Studio configuration.
@@ -60,5 +61,6 @@ export const schemaTypes = [
   marquee,
   accordionList,
   contactFormSection,
+  columnsSection,
   callToAction,
 ]

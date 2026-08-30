@@ -39,6 +39,16 @@ export type CallToAction = {
   contentAlignment?: "textFirst" | "imageFirst";
 };
 
+export type ColumnsSection = {
+  _type: "columnsSection";
+  heading?: string;
+  columns?: Array<{
+    content?: BlockContent;
+    _type: "column";
+    _key: string;
+  }>;
+};
+
 export type ContactFormSection = {
   _type: "contactFormSection";
   heading?: string;
@@ -267,6 +277,8 @@ export type Page = {
     _key: string;
   } & ContactFormSection | {
     _key: string;
+  } & ColumnsSection | {
+    _key: string;
   } & CallToAction>;
   seo?: Seo;
 };
@@ -301,6 +313,8 @@ export type HomePage = {
   } & AccordionList | {
     _key: string;
   } & ContactFormSection | {
+    _key: string;
+  } & ColumnsSection | {
     _key: string;
   } & CallToAction>;
   seo?: Seo;
@@ -614,7 +628,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | HeroSection | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | HeroSection | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -697,6 +711,15 @@ export type GetPageQueryResult = {
     };
     theme?: "dark" | "light";
     contentAlignment?: "imageFirst" | "textFirst";
+  } | {
+    _key: string;
+    _type: "columnsSection";
+    heading?: string;
+    columns?: Array<{
+      content?: BlockContent;
+      _type: "column";
+      _key: string;
+    }>;
   } | {
     _key: string;
     _type: "contactFormSection";
