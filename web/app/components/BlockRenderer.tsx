@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Cta from '@/app/components/Cta'
-import Info from '@/app/components/InfoSection'
 import {dataAttr} from '@/sanity/lib/utils'
 import {PageBuilderSection} from '@/sanity/lib/types'
 
@@ -18,7 +17,6 @@ type BlocksType = {
 
 const Blocks = {
   callToAction: Cta,
-  infoSection: Info,
 } as BlocksType
 
 /**

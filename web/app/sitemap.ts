@@ -4,55 +4,31 @@ import {sitemapData} from '@/sanity/lib/queries'
 import {headers} from 'next/headers'
 
 /**
- * This file creates a sitemap (sitemap.xml) for the application. Learn more about sitemaps in Next.js here: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
- * Be sure to update the `changeFrequency` and `priority` values to match your application's content.
+ * Creates a sitemap (sitemap.xml) for the application. Learn more:
+ * https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allPostsAndPages = await sanityFetch({
-    query: sitemapData,
-  })
+  const allPages = await sanityFetch({query: sitemapData})
   const headersList = await headers()
-  const sitemap: MetadataRoute.Sitemap = []
-  const domain: string = headersList.get('host') as string
-  sitemap.push({
-    url: domain as string,
-    lastModified: new Date(),
-    priority: 1,
-    changeFrequency: 'monthly',
-  })
+  const domain = headersList.get('host') as string
 
-  if (allPostsAndPages != null && allPostsAndPages.data.length != 0) {
-    let priority: number
-    let changeFrequency:
-      | 'monthly'
-      | 'always'
-      | 'hourly'
-      | 'daily'
-      | 'weekly'
-      | 'yearly'
-      | 'never'
-      | undefined
-    let url: string
+  const sitemap: MetadataRoute.Sitemap = [
+    {
+      url: domain,
+      lastModified: new Date(),
+      priority: 1,
+      changeFrequency: 'monthly',
+    },
+  ]
 
-    for (const p of allPostsAndPages.data) {
-      switch (p._type) {
-        case 'page':
-          priority = 0.8
-          changeFrequency = 'monthly'
-          url = `${domain}/${p.slug}`
-          break
-        case 'post':
-          priority = 0.5
-          changeFrequency = 'never'
-          url = `${domain}/posts/${p.slug}`
-          break
-      }
+  if (allPages?.data?.length) {
+    for (const page of allPages.data) {
       sitemap.push({
-        lastModified: p._updatedAt || new Date(),
-        priority,
-        changeFrequency,
-        url,
+        url: `${domain}/${page.slug}`,
+        lastModified: page._updatedAt || new Date(),
+        priority: 0.8,
+        changeFrequency: 'monthly',
       })
     }
   }
