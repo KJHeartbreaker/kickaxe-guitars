@@ -2,44 +2,200 @@
 
 @plugin "@tailwindcss/typography";
 
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-medium tracking-tight;
+/*
+ * Kickaxe "After Hours" theme.
+ * Black like amp tolex, bone like fretboard inlays, and the Kickaxe orange.
+ * Orange is a fill or an accent on dark; on bone it is only ever a fill
+ * behind black text, never text itself (contrast).
+ */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #fff;
+  --color-black: #000;
+
+  --color-ink: #0f0d0b; /* page background on dark sections */
+  --color-cab: #1a1714; /* cards and panels on dark */
+  --color-line: #2e2924; /* hairlines on dark */
+  --color-bone: #f4eee4; /* light sections, text on dark */
+  --color-soft: #d9d0c2; /* body copy on dark */
+  --color-muted: #a39886; /* secondary text on dark (6.8:1) */
+  --color-orange: #ed8917; /* brand */
+  --color-stone: #4a423a; /* body copy on bone (8.7:1) */
+  --color-label: #685e52; /* labels on bone */
+  --color-rule: #cfc5b5; /* hairlines on bone */
+
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-big-shoulders), 'Arial Narrow', sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --default-transition-duration: 200ms;
+
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 }
 
-@utility container {
-  margin: 0 auto;
-  padding: 0 2rem;
+@layer base {
+  html {
+    @apply bg-ink text-bone font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    @apply bg-orange text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-orange;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* Page width wrapper */
+@utility wrap {
+  @apply mx-auto w-full max-w-[1360px] px-5 sm:px-6;
+}
 
-@theme {
-  --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+/* Mono uppercase section label */
+@utility eyebrow {
+  @apply font-mono text-[13px] tracking-[0.12em] uppercase text-orange;
+}
 
-  --color-framework: #000;
-  --color-black: #0b0b0b;
-  --color-white: #fff;
-  --color-brand: #f50;
-  --color-blue: #0052ff;
-  --color-yellow: #cdea19;
-  --color-gray-50: #f6f6f8;
-  --color-gray-100: #eeeef1;
-  --color-gray-200: #e3e4e8;
-  --color-gray-300: #bbbdc9;
-  --color-gray-400: #9499ad;
-  --color-gray-500: #727892;
-  --color-gray-600: #515870;
-  --color-gray-700: #383d51;
-  --color-gray-800: #252837;
-  --color-gray-900: #1b1d27;
-  --color-gray-950: #13141b;
+/* Condensed signage headlines */
+/*
+ * No letter-spacing on display type: in draft mode every string carries ~1,000
+ * invisible Visual Editing characters, and Firefox applies letter-spacing to
+ * them. Even -0.005em made titles measure ~400px too narrow and wrap early.
+ */
+@utility display {
+  @apply font-display font-black uppercase leading-[0.9] text-balance;
+}
+@utility display-xl {
+  @apply display text-[clamp(56px,8.4vw,136px)] leading-[0.86];
+}
+@utility display-lg {
+  @apply display text-[clamp(44px,5vw,72px)];
+}
+@utility display-md {
+  @apply display text-[clamp(36px,4.4vw,60px)];
+}
+@utility card-title {
+  @apply font-display font-extrabold uppercase text-[30px] leading-none;
+}
 
-  --default-transition-duration: 250ms;
+/* Buttons: square, solid, 48px tall */
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2.5 px-6 font-semibold text-base no-underline transition-colors;
+}
+@utility btn-primary {
+  @apply btn bg-orange text-ink hover:bg-bone;
+}
+@utility btn-outline {
+  @apply btn border-[1.5px] border-current hover:bg-bone hover:text-ink hover:border-bone;
+}
+@utility btn-ink {
+  @apply btn bg-ink text-bone hover:bg-cab;
+}
+@utility text-link {
+  @apply font-mono text-sm underline underline-offset-4 decoration-1 hover:text-orange;
+}
+
+/*
+ * Full-bleed rows: the text side lines up with the page grid (.wrap) while the
+ * media runs to the window edge. Capped at 1920px so ultrawide screens get a
+ * framed row, not a giant photo.
+ */
+@utility ps-edge {
+  padding-inline-start: max(1.5rem, calc((min(100vw, 1920px) - 1360px) / 2 + 1.5rem));
+}
+@utility pe-edge {
+  padding-inline-end: max(1.5rem, calc((min(100vw, 1920px) - 1360px) / 2 + 1.5rem));
+}
+
+/* Small mono tags on cards */
+@utility tag {
+  @apply inline-block bg-orange px-2.5 py-1 font-mono text-xs font-medium tracking-[0.06em] uppercase text-ink;
+}
+
+/*
+ * Accordion animation for native <details class="accordion">.
+ * The panel's height eases between 0 and auto (interpolate-size), and the
+ * text fades in. Browsers without these features open instantly, as before.
+ */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}
+
+details.accordion::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    content-visibility 320ms allow-discrete;
+}
+details.accordion[open]::details-content {
+  block-size: auto;
+}
+details.accordion .accordion-panel {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 260ms ease,
+    transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+details.accordion[open] .accordion-panel {
+  opacity: 1;
+  transform: none;
+  transition-delay: 60ms;
+}
+
+/* Plus that turns into a minus: the vertical bar rotates flat. */
+.accordion-icon {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.accordion-icon::before,
+.accordion-icon::after {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 2px;
+  margin-top: -1px;
+  background: currentColor;
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.accordion-icon::after {
+  transform: rotate(90deg);
+}
+details.accordion[open] .accordion-icon::after {
+  transform: rotate(0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  details.accordion::details-content,
+  details.accordion .accordion-panel,
+  .accordion-icon::before,
+  .accordion-icon::after {
+    transition: none;
+  }
 }

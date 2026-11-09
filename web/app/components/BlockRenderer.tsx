@@ -1,8 +1,22 @@
-import React from 'react'
+import type {ComponentType} from 'react'
 
-import Cta from '@/app/components/Cta'
+import AccordionList from '@/app/components/blocks/AccordionList'
+import CardGrid from '@/app/components/blocks/CardGrid'
+import Columns from '@/app/components/blocks/Columns'
+import ContactForm from '@/app/components/blocks/ContactForm'
+import Cta from '@/app/components/blocks/Cta'
+import DividerImage from '@/app/components/blocks/DividerImage'
+import Gallery from '@/app/components/blocks/Gallery'
+import Hero from '@/app/components/blocks/Hero'
+import Marquee from '@/app/components/blocks/Marquee'
+import MediaText from '@/app/components/blocks/MediaText'
+import PageTitle from '@/app/components/blocks/PageTitle'
+import RichText from '@/app/components/blocks/RichText'
+import SingleColumn from '@/app/components/blocks/SingleColumn'
+import TwoColumn from '@/app/components/blocks/TwoColumn'
+import VisitShop from '@/app/components/blocks/VisitShop'
 import {dataAttr} from '@/sanity/lib/utils'
-import {PageBuilderSection} from '@/sanity/lib/types'
+import type {PageBuilderSection} from '@/sanity/lib/types'
 
 type BlockProps = {
   index: number
@@ -11,46 +25,43 @@ type BlockProps = {
   pageType: string
 }
 
-type BlocksType = {
-  [key: string]: React.FC<BlockProps>
+// Each component takes its own block type; the renderer picks it by `_type`.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Blocks: Record<PageBuilderSection['_type'], ComponentType<{block: any; index: number}>> = {
+  pageTitle: PageTitle,
+  heroSection: Hero,
+  twoColumn: TwoColumn,
+  singleColumn: SingleColumn,
+  cardGrid: CardGrid,
+  visitShop: VisitShop,
+  richTextSection: RichText,
+  mediaText: MediaText,
+  gallery: Gallery,
+  dividerImage: DividerImage,
+  marquee: Marquee,
+  accordionList: AccordionList,
+  contactFormSection: ContactForm,
+  columnsSection: Columns,
+  callToAction: Cta,
 }
 
-const Blocks = {
-  callToAction: Cta,
-} as BlocksType
-
 /**
- * Used by the <PageBuilder>, this component renders a the component that matches the block type.
+ * Used by the <PageBuilder>, this renders the component that matches the
+ * block type, wrapped with the data attribute Visual Editing needs.
  */
 export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
-  // Block does exist
-  if (typeof Blocks[block._type] !== 'undefined') {
-    return (
-      <div
-        key={block._key}
-        data-sanity={dataAttr({
-          id: pageId,
-          type: pageType,
-          path: `pageBuilder[_key=="${block._key}"]`,
-        }).toString()}
-      >
-        {React.createElement(Blocks[block._type], {
-          key: block._key,
-          block: block,
-          index: index,
-          pageId: pageId,
-          pageType: pageType,
-        })}
-      </div>
-    )
-  }
-  // Block doesn't exist yet
-  return React.createElement(
-    () => (
-      <div className="w-full bg-gray-100 text-center text-gray-500 p-20 rounded">
-        A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
-      </div>
-    ),
-    {key: block._key},
+  const Component = Blocks[block._type]
+  if (!Component) return null
+
+  return (
+    <div
+      data-sanity={dataAttr({
+        id: pageId,
+        type: pageType,
+        path: `pageBuilder[_key=="${block._key}"]`,
+      }).toString()}
+    >
+      <Component block={block} index={index} />
+    </div>
   )
 }
