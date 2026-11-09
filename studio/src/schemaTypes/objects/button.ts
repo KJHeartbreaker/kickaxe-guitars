@@ -1,7 +1,11 @@
 import {defineField, defineType} from 'sanity'
 
 /**
- * A labelled, linked button used in heroes, CTAs and media/text sections.
+ * A labelled, linked button (CTA). Used on its own in blocks and in groups of
+ * one or two inside rich text (the Buttons component).
+ *
+ * Style: solid, outline or text link. Colour: "Auto" picks whatever reads on
+ * the background it sits on (orange on black, black on bone or orange).
  */
 
 export default defineType({
@@ -28,18 +32,43 @@ export default defineType({
       initialValue: 'primary',
       options: {
         list: [
-          {title: 'Primary', value: 'primary'},
-          {title: 'Secondary', value: 'secondary'},
-          {title: 'Text / link', value: 'text'},
+          {title: 'Solid', value: 'primary'},
+          {title: 'Outline', value: 'secondary'},
+          {title: 'Text link', value: 'text'},
         ],
         layout: 'radio',
+        direction: 'horizontal',
       },
+    }),
+    defineField({
+      name: 'tone',
+      title: 'Colour',
+      type: 'string',
+      initialValue: 'auto',
+      description: 'Auto picks a colour that reads on the background.',
+      options: {
+        list: [
+          {title: 'Auto', value: 'auto'},
+          {title: 'Orange', value: 'orange'},
+          {title: 'Bone', value: 'bone'},
+          {title: 'Black', value: 'ink'},
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+    }),
+    defineField({
+      name: 'arrow',
+      title: 'Show arrow',
+      type: 'boolean',
+      initialValue: false,
     }),
   ],
   preview: {
-    select: {title: 'buttonText', subtitle: 'variant'},
-    prepare({title, subtitle}) {
-      return {title: title || 'Button', subtitle: subtitle ? `${subtitle} button` : 'Button'}
+    select: {title: 'buttonText', variant: 'variant'},
+    prepare({title, variant}) {
+      const style = {primary: 'Solid', secondary: 'Outline', text: 'Text link'}[variant as string]
+      return {title: title || 'Button', subtitle: style ? `${style} button` : 'Button'}
     },
   },
   options: {collapsible: true},

@@ -1,5 +1,5 @@
 import {CogIcon} from '@sanity/icons/Cog'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 /**
  * Site-wide settings singleton: general info, default SEO/share, the promo bar
@@ -14,6 +14,7 @@ export const settings = defineType({
   icon: CogIcon,
   groups: [
     {name: 'general', title: 'General', default: true},
+    {name: 'shop', title: 'Shop Info'},
     {name: 'seo', title: 'SEO'},
     {name: 'promo', title: 'Promo Bar'},
     {name: 'cookie', title: 'Cookie Notice'},
@@ -40,6 +41,113 @@ export const settings = defineType({
       type: 'image',
       group: 'general',
       options: {hotspot: false},
+    }),
+    defineField({
+      name: 'shopInfo',
+      title: 'Shop info',
+      type: 'object',
+      group: 'shop',
+      description:
+        'Shown in the strip above the header, the footer and the "Visit the Shop" block.',
+      options: {collapsible: false},
+      fields: [
+        defineField({
+          name: 'address',
+          title: 'Street address',
+          type: 'string',
+          placeholder: '1409A 11 Street SW',
+        }),
+        defineField({
+          name: 'cityLine',
+          title: 'City, province and postal code',
+          type: 'string',
+          placeholder: 'Calgary, AB T2R 1G7',
+        }),
+        defineField({name: 'phone', title: 'Phone', type: 'string', placeholder: '403-410-9199'}),
+        defineField({
+          name: 'email',
+          title: 'Email',
+          type: 'string',
+          validation: (Rule) => Rule.email(),
+        }),
+        defineField({
+          name: 'mapUrl',
+          title: 'Directions link',
+          type: 'url',
+          description: 'A Google Maps (or similar) link for "Get directions".',
+        }),
+        defineField({
+          name: 'hours',
+          title: 'Opening hours',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              name: 'hoursRow',
+              title: 'Hours',
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'days',
+                  title: 'Days',
+                  type: 'string',
+                  placeholder: 'Mon–Fri',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'opens',
+                  title: 'Opens',
+                  type: 'string',
+                  placeholder: '11:30',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'closes',
+                  title: 'Closes',
+                  type: 'string',
+                  placeholder: '5:30',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'weekdays',
+                  title: 'Which days does this row cover?',
+                  description: 'Used to show "Open today" in the strip above the header.',
+                  type: 'array',
+                  of: [defineArrayMember({type: 'string'})],
+                  options: {
+                    layout: 'grid',
+                    list: [
+                      {title: 'Mon', value: '1'},
+                      {title: 'Tue', value: '2'},
+                      {title: 'Wed', value: '3'},
+                      {title: 'Thu', value: '4'},
+                      {title: 'Fri', value: '5'},
+                      {title: 'Sat', value: '6'},
+                      {title: 'Sun', value: '0'},
+                    ],
+                  },
+                }),
+              ],
+              preview: {
+                select: {days: 'days', opens: 'opens', closes: 'closes'},
+                prepare: ({days, opens, closes}) => ({title: days, subtitle: `${opens ?? ''} – ${closes ?? ''}`}),
+              },
+            }),
+          ],
+        }),
+        defineField({
+          name: 'photo',
+          title: 'Storefront photo',
+          type: 'figure',
+          description: 'Used by the "Visit the Shop" block when it is set to show the storefront photo.',
+        }),
+        defineField({
+          name: 'note',
+          title: 'Visit note',
+          type: 'string',
+          description: 'A short line under the address, e.g. parking.',
+          placeholder: 'Free parking on 11th Street SW on weekends.',
+        }),
+      ],
     }),
     defineField({
       name: 'metaTitle',

@@ -18,9 +18,15 @@ import {socialLink} from './objects/socialLink'
 import {figure} from './objects/figure'
 import {accordion} from './objects/accordion'
 import {navItem} from './objects/navItem'
+import {columnText, columnImage, columnImagePair, columnAccordion} from './objects/columnItems'
 
 // Page-builder blocks
 import {heroSection} from './objects/blocks/heroSection'
+import {twoColumn} from './objects/blocks/twoColumn'
+import {singleColumn} from './objects/blocks/singleColumn'
+import {cardGrid, cardGridItem} from './objects/blocks/cardGrid'
+import {visitShop} from './objects/blocks/visitShop'
+import {pageTitle} from './objects/blocks/pageTitle'
 import {richTextSection} from './objects/blocks/richTextSection'
 import {mediaText} from './objects/blocks/mediaText'
 import {gallery} from './objects/blocks/gallery'
@@ -30,6 +36,8 @@ import {accordionList} from './objects/blocks/accordionList'
 import {contactFormSection} from './objects/blocks/contactFormSection'
 import {columnsSection} from './objects/blocks/columnsSection'
 import {callToAction} from './objects/callToAction'
+
+import {withDisabled} from './helpers/withDisabled'
 
 // Export an array of all the schema types. This is used in the Sanity Studio configuration.
 // https://www.sanity.io/docs/studio/schema-types
@@ -52,15 +60,27 @@ export const schemaTypes = [
   figure,
   accordion,
   navItem,
-  // Page-builder blocks
-  heroSection,
-  richTextSection,
-  mediaText,
-  gallery,
-  dividerImage,
-  marquee,
-  accordionList,
-  contactFormSection,
-  columnsSection,
-  callToAction,
+  cardGridItem,
+  columnText,
+  columnImage,
+  columnImagePair,
+  columnAccordion,
+  // Page-builder blocks: each gets a "Disabled" switch (see helpers/withDisabled.ts)
+  ...[
+    pageTitle,
+    heroSection,
+    twoColumn,
+    singleColumn,
+    cardGrid,
+    visitShop,
+    richTextSection,
+    mediaText,
+    gallery,
+    dividerImage,
+    marquee,
+    accordionList,
+    contactFormSection,
+    columnsSection,
+    callToAction,
+  ].map(withDisabled),
 ]

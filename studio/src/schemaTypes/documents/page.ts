@@ -8,7 +8,12 @@ import {DocumentIcon} from '@sanity/icons/Document'
 
 /** The blocks available to the page builder, shared by `page` and `homePage`. */
 export const pageBuilderMembers = [
+  defineArrayMember({type: 'pageTitle'}),
   defineArrayMember({type: 'heroSection'}),
+  defineArrayMember({type: 'twoColumn'}),
+  defineArrayMember({type: 'singleColumn'}),
+  defineArrayMember({type: 'cardGrid'}),
+  defineArrayMember({type: 'visitShop'}),
   defineArrayMember({type: 'richTextSection'}),
   defineArrayMember({type: 'mediaText'}),
   defineArrayMember({type: 'gallery'}),

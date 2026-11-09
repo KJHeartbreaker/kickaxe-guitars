@@ -72,13 +72,14 @@ export const callToAction = defineType({
       title: 'Theme',
       options: {
         list: [
+          {title: 'Orange (brand)', value: 'brand'},
           {title: 'Light', value: 'light'},
           {title: 'Dark', value: 'dark'},
         ],
         layout: 'radio',
       },
-      description: 'Use dark theme with white tile grid background',
-      initialValue: 'light',
+      description: 'Orange is the bold brand band. Light uses the bone background; dark uses a dark panel.',
+      initialValue: 'brand',
       group: 'designSystem',
     }),
     defineField({
