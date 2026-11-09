@@ -12,4 +12,4 @@ The site runs at http://localhost:3000. `pnpm dev` regenerates the Sanity types 
 
 ## Deploy
 
-Vercel project **kickaxe-website** (team kjheartbreakers-projects), with the root directory set to `web`. Pushes to `main` deploy to production; other branches get preview deployments. The project is on the Hobby plan, so commits must be authored with the project owner's email or Vercel blocks the deployment.
+Vercel project **kickaxe-website** (team kjheartbreakers-projects), with the root directory set to `web`. Pushes to `main` deploy to production; other branches get preview deployments. The project is on Vercel's Hobby plan, which only deploys commits to a private repo from the project owner, so this repo is public. Keep it that way, and never commit `.env` files or tokens.
