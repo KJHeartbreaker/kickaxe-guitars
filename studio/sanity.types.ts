@@ -24,6 +24,7 @@ export type SanityImageAssetReference = {
 
 export type CallToAction = {
   _type: "callToAction";
+  disabled?: boolean;
   eyebrow?: string;
   heading: string;
   body?: BlockContentTextOnly;
@@ -35,85 +36,188 @@ export type CallToAction = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  theme?: "light" | "dark";
+  theme?: "brand" | "light" | "dark";
   contentAlignment?: "textFirst" | "imageFirst";
+  anchor?: string;
 };
 
 export type ColumnsSection = {
   _type: "columnsSection";
+  disabled?: boolean;
   heading?: string;
   columns?: Array<{
     content?: BlockContent;
     _type: "column";
     _key: string;
   }>;
+  anchor?: string;
 };
 
 export type ContactFormSection = {
   _type: "contactFormSection";
+  disabled?: boolean;
   heading?: string;
   intro?: BlockContentTextOnly;
   submitLabel?: string;
   successMessage?: string;
+  anchor?: string;
 };
 
 export type AccordionList = {
   _type: "accordionList";
+  disabled?: boolean;
   heading?: string;
   items: Array<{
     _key: string;
   } & Accordion>;
+  anchor?: string;
 };
 
 export type Marquee = {
   _type: "marquee";
-  items: Array<{
-    text?: string;
-    _type: "marqueeText";
-    _key: string;
-  } | {
+  disabled?: boolean;
+  words?: Array<string>;
+  logos?: Array<{
     _key: string;
   } & Figure>;
   speed?: number;
   reverse?: boolean;
   pausable?: boolean;
+  anchor?: string;
 };
 
 export type DividerImage = {
   _type: "dividerImage";
+  disabled?: boolean;
   image: Figure;
   size?: "small" | "medium" | "large" | "full";
+  anchor?: string;
 };
 
 export type Gallery = {
   _type: "gallery";
+  disabled?: boolean;
   heading?: string;
   images: Array<{
     _key: string;
   } & Figure>;
   layout?: "grid" | "carousel";
   columns?: 2 | 3 | 4;
+  anchor?: string;
 };
 
 export type MediaText = {
   _type: "mediaText";
+  disabled?: boolean;
   image: Figure;
   heading?: string;
   content?: BlockContentTextOnly;
   button?: Button;
   imagePosition?: "left" | "right";
+  anchor?: string;
 };
 
 export type RichTextSection = {
   _type: "richTextSection";
+  disabled?: boolean;
   heading?: string;
   content: BlockContent;
   maxWidth?: "narrow" | "normal" | "wide" | "full";
   align?: "left" | "center";
+  anchor?: string;
+};
+
+export type VisitShop = {
+  _type: "visitShop";
+  disabled?: boolean;
+  title?: string;
+  media?: "map" | "photo";
+  background?: "bone" | "ink" | "cab";
+  anchor?: string;
+};
+
+export type CardGrid = {
+  _type: "cardGrid";
+  disabled?: boolean;
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  linkLabel?: string;
+  link?: Link;
+  style?: "cards" | "list";
+  items: Array<{
+    _key: string;
+  } & CardGridItem>;
+  background?: "ink" | "cab" | "bone";
+  spacing?: "normal" | "compact";
+  numbered?: boolean;
+  dials?: boolean;
+  divider?: boolean;
+  anchor?: string;
+};
+
+export type SingleColumn = {
+  _type: "singleColumn";
+  disabled?: boolean;
+  eyebrow?: string;
+  content?: BlockContent;
+  align?: "left" | "center";
+  width?: "narrow" | "normal" | "wide" | "full";
+  mediaType?: "none" | "image";
+  image?: Figure;
+  mediaPosition?: "above" | "below";
+  mediaHeight?: "natural" | "small" | "medium" | "large" | "full";
+  fullBleed?: boolean;
+  tagLabel?: string;
+  tagTitle?: string;
+  tagText?: string;
+  tagLink?: Link;
+  tagLinkLabel?: string;
+  background?: "ink" | "cab" | "bone" | "orange";
+  spacing?: "normal" | "compact";
+  noPaddingTop?: boolean;
+  noPaddingBottom?: boolean;
+  divider?: boolean;
+  anchor?: string;
+};
+
+export type TwoColumn = {
+  _type: "twoColumn";
+  disabled?: boolean;
+  eyebrow?: string;
+  title?: string;
+  left?: Array<{
+    _key: string;
+  } & ColumnText | {
+    _key: string;
+  } & ColumnImage | {
+    _key: string;
+  } & ColumnImagePair | {
+    _key: string;
+  } & ColumnAccordion>;
+  right?: Array<{
+    _key: string;
+  } & ColumnText | {
+    _key: string;
+  } & ColumnImage | {
+    _key: string;
+  } & ColumnImagePair | {
+    _key: string;
+  } & ColumnAccordion>;
+  split?: "30-70" | "40-60" | "50-50" | "60-40" | "70-30" | "auto-left" | "auto-right";
+  mobileFirst?: "left" | "right";
+  background?: "ink" | "cab" | "bone" | "orange";
+  verticalAlign?: "center" | "top";
+  spacing?: "normal" | "compact";
+  noPaddingTop?: boolean;
+  noPaddingBottom?: boolean;
+  divider?: boolean;
+  anchor?: string;
 };
 
 export type HeroSection = {
   _type: "heroSection";
+  disabled?: boolean;
   eyebrow?: string;
   heading: string;
   body?: BlockContent;
@@ -124,6 +228,58 @@ export type HeroSection = {
   image?: Figure;
   videoUrl?: string;
   alignment?: "left" | "center";
+  anchor?: string;
+};
+
+export type PageTitle = {
+  _type: "pageTitle";
+  disabled?: boolean;
+  title?: string;
+  intro?: string;
+  showTrail?: boolean;
+  anchor?: string;
+};
+
+export type ColumnAccordion = {
+  _type: "columnAccordion";
+  items: Array<{
+    _key: string;
+  } & Accordion>;
+  firstOpen?: boolean;
+};
+
+export type ColumnImagePair = {
+  _type: "columnImagePair";
+  image: Figure;
+  secondImage?: Figure;
+};
+
+export type ColumnImage = {
+  _type: "columnImage";
+  image: Figure;
+  fullBleed?: boolean;
+  tagTitle?: string;
+  tagLabel?: string;
+  tagText?: string;
+  tagLinkLabel?: string;
+  tagLink?: Link;
+};
+
+export type ColumnText = {
+  _type: "columnText";
+  content?: BlockContent;
+};
+
+export type CardGridItem = {
+  _type: "cardGridItem";
+  image?: Figure;
+  badge?: string;
+  badgeHighlight?: boolean;
+  kicker?: string;
+  title: string;
+  text?: string;
+  linkLabel?: string;
+  link?: Link;
 };
 
 export type NavItem = {
@@ -198,7 +354,7 @@ export type BlockContent = Array<{
     _type: "span";
     _key: string;
   }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote" | "small";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
     _key: string;
@@ -207,14 +363,41 @@ export type BlockContent = Array<{
   _type: "block";
   _key: string;
 } | {
+  buttons?: Array<{
+    _key: string;
+  } & Button>;
+  align?: "left" | "center" | "right";
+  _type: "ptButtons";
   _key: string;
-} & Figure>;
+} | {
+  items?: Array<{
+    label?: string;
+    title: string;
+    text?: string;
+    _type: "infoStripItem";
+    _key: string;
+  }>;
+  _type: "infoStrip";
+  _key: string;
+} | {
+  items?: Array<string>;
+  _type: "highlights";
+  _key: string;
+} | {
+  _key: string;
+} & Figure | {
+  spacing?: "small" | "medium" | "large";
+  _type: "divider";
+  _key: string;
+}>;
 
 export type Button = {
   _type: "button";
   buttonText: string;
   link?: Link;
   variant?: "primary" | "secondary" | "text";
+  tone?: "auto" | "orange" | "bone" | "ink";
+  arrow?: boolean;
 };
 
 export type PageReference = {
@@ -233,9 +416,12 @@ export type HomePageReference = {
 
 export type Link = {
   _type: "link";
-  linkType?: "href" | "page";
+  linkType?: "href" | "page" | "phone" | "email" | "section";
   href?: string;
   page?: PageReference | HomePageReference;
+  phone?: string;
+  email?: string;
+  section?: string;
   openInNewTab?: boolean;
 };
 
@@ -261,7 +447,17 @@ export type Page = {
   hasTransparentHeader?: boolean;
   pageBuilder?: Array<{
     _key: string;
+  } & PageTitle | {
+    _key: string;
   } & HeroSection | {
+    _key: string;
+  } & TwoColumn | {
+    _key: string;
+  } & SingleColumn | {
+    _key: string;
+  } & CardGrid | {
+    _key: string;
+  } & VisitShop | {
     _key: string;
   } & RichTextSection | {
     _key: string;
@@ -298,7 +494,17 @@ export type HomePage = {
   hasTransparentHeader?: boolean;
   pageBuilder?: Array<{
     _key: string;
+  } & PageTitle | {
+    _key: string;
   } & HeroSection | {
+    _key: string;
+  } & TwoColumn | {
+    _key: string;
+  } & SingleColumn | {
+    _key: string;
+  } & CardGrid | {
+    _key: string;
+  } & VisitShop | {
     _key: string;
   } & RichTextSection | {
     _key: string;
@@ -386,6 +592,23 @@ export type Settings = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
+  };
+  shopInfo?: {
+    address?: string;
+    cityLine?: string;
+    phone?: string;
+    email?: string;
+    mapUrl?: string;
+    hours?: Array<{
+      days: string;
+      opens: string;
+      closes: string;
+      weekdays?: Array<string>;
+      _type: "hoursRow";
+      _key: string;
+    }>;
+    photo?: Figure;
+    note?: string;
   };
   metaTitle?: string;
   metaDescription?: string;
@@ -628,5 +851,5 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | HeroSection | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | VisitShop | CardGrid | SingleColumn | TwoColumn | HeroSection | PageTitle | ColumnAccordion | ColumnImagePair | ColumnImage | ColumnText | CardGridItem | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 

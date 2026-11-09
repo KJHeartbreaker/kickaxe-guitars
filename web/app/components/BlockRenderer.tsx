@@ -1,4 +1,5 @@
 import type {ComponentType} from 'react'
+import {stegaClean} from 'next-sanity'
 
 import AccordionList from '@/app/components/blocks/AccordionList'
 import CardGrid from '@/app/components/blocks/CardGrid'
@@ -52,9 +53,13 @@ const Blocks: Record<PageBuilderSection['_type'], ComponentType<{block: any; ind
 export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
   const Component = Blocks[block._type]
   if (!Component) return null
+  // A jump-link name lets "Section on this page" links scroll here.
+  const anchor = stegaClean((block as {anchor?: string}).anchor)?.trim() || undefined
 
   return (
     <div
+      id={anchor}
+      className={anchor ? 'scroll-mt-24' : undefined}
       data-sanity={dataAttr({
         id: pageId,
         type: pageType,

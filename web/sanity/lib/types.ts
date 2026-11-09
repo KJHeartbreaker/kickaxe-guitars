@@ -30,8 +30,9 @@ export type FooterData = NonNullable<FooterQueryResult>
 // Represents a Link after GROQ dereferencing (page becomes a slug string, "" for home)
 export type DereferencedLink = {
   _type: 'link'
-  linkType?: 'href' | 'page' | 'phone' | 'email'
+  linkType?: 'href' | 'page' | 'phone' | 'email' | 'section'
   href?: string
+  section?: string
   page?: string | null
   phone?: string
   email?: string

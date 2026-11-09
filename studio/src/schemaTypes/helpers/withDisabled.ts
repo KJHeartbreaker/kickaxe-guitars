@@ -1,4 +1,5 @@
 import {defineField, type ObjectDefinition, type PreviewValue} from 'sanity'
+import {isJumpName} from '../objects/link'
 
 /**
  * Adds a "Disabled" switch to a page-builder block. A disabled block stays in
@@ -7,6 +8,9 @@ import {defineField, type ObjectDefinition, type PreviewValue} from 'sanity'
  *
  * In the page builder list the block's subtitle is prefixed with "Disabled",
  * so it's easy to spot.
+ *
+ * Also adds an optional "Jump-link name" at the end, so a button or list item
+ * set to "Section on this page" can scroll straight to this block.
  */
 export function withDisabled<T extends ObjectDefinition>(type: T): T {
   const defaultGroup = type.groups?.find((group) => group.default)?.name ?? type.groups?.[0]?.name
@@ -20,12 +24,31 @@ export function withDisabled<T extends ObjectDefinition>(type: T): T {
     ...(defaultGroup ? {group: defaultGroup} : {}),
   })
 
+  const hasDesign = type.fieldsets?.some((set) => set.name === 'design')
+  const designGroup = type.groups?.find((group) => group.name === 'design' || group.title === 'Design')?.name
+  const anchorField = defineField({
+    name: 'anchor',
+    title: 'Jump-link name',
+    type: 'string',
+    description:
+      'Optional. Lets a link set to “Section on this page” jump straight here. One short word, e.g. teye. Leave blank if nothing links here.',
+    validation: (Rule) =>
+      Rule.custom((value) =>
+        !value || isJumpName(String(value))
+          ? true
+          : 'Use lower-case letters, numbers and dashes only, e.g. rick-turner',
+      ),
+    // Tucked into the block's Design section or tab where it has one.
+    ...(hasDesign ? {fieldset: 'design'} : {}),
+    ...(designGroup ? {group: designGroup} : defaultGroup ? {group: defaultGroup} : {}),
+  })
+
   const preview = type.preview
   const select = {...(preview?.select ?? {}), disabled: 'disabled'}
 
   return {
     ...type,
-    fields: [disabledField, ...type.fields],
+    fields: [disabledField, ...type.fields, anchorField],
     preview: {
       select,
       prepare(selection: Record<string, unknown>) {

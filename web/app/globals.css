@@ -50,6 +50,13 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* In-page jump links glide; Next skips it for page changes (data-scroll-behavior). */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   ::selection {
     @apply bg-orange text-ink;
   }
