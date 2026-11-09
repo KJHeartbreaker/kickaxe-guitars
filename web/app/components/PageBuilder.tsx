@@ -4,12 +4,11 @@ import {SanityDocument} from 'next-sanity'
 import {useOptimistic} from 'next-sanity/hooks'
 
 import BlockRenderer from '@/app/components/BlockRenderer'
-import {GetPageQueryResult} from '@/sanity.types'
 import {dataAttr} from '@/sanity/lib/utils'
-import {PageBuilderSection} from '@/sanity/lib/types'
+import type {PageBuilderDocument, PageBuilderSection} from '@/sanity/lib/types'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult
+  page: PageBuilderDocument | null
 }
 
 type PageData = {
@@ -27,7 +26,7 @@ function RenderSections({
   page,
 }: {
   pageBuilderSections: PageBuilderSection[]
-  page: GetPageQueryResult
+  page: PageBuilderDocument | null
 }) {
   if (!page) {
     return null
@@ -53,24 +52,22 @@ function RenderSections({
   )
 }
 
-function RenderEmptyState({page}: {page: GetPageQueryResult}) {
+function RenderEmptyState({page}: {page: PageBuilderDocument | null}) {
   if (!page) {
     return null
   }
 
   return (
     <div
-      className="container mt-10"
+      className="wrap py-24"
       data-sanity={dataAttr({
         id: page._id,
-        type: 'page',
+        type: page._type,
         path: `pageBuilder`,
       }).toString()}
     >
-      <div className="prose">
-        <h2 className="">This page has no content!</h2>
-        <p className="">Open the page in Sanity Studio to add content.</p>
-      </div>
+      <h2 className="display-md">This page has no content yet</h2>
+      <p className="mt-4 text-soft">Open the page in Sanity Studio to add content.</p>
     </div>
   )
 }

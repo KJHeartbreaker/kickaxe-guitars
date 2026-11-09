@@ -24,6 +24,7 @@ export type SanityImageAssetReference = {
 
 export type CallToAction = {
   _type: "callToAction";
+  disabled?: boolean;
   eyebrow?: string;
   heading: string;
   body?: BlockContentTextOnly;
@@ -35,12 +36,13 @@ export type CallToAction = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  theme?: "light" | "dark";
+  theme?: "brand" | "light" | "dark";
   contentAlignment?: "textFirst" | "imageFirst";
 };
 
 export type ColumnsSection = {
   _type: "columnsSection";
+  disabled?: boolean;
   heading?: string;
   columns?: Array<{
     content?: BlockContent;
@@ -51,6 +53,7 @@ export type ColumnsSection = {
 
 export type ContactFormSection = {
   _type: "contactFormSection";
+  disabled?: boolean;
   heading?: string;
   intro?: BlockContentTextOnly;
   submitLabel?: string;
@@ -59,6 +62,7 @@ export type ContactFormSection = {
 
 export type AccordionList = {
   _type: "accordionList";
+  disabled?: boolean;
   heading?: string;
   items: Array<{
     _key: string;
@@ -67,11 +71,9 @@ export type AccordionList = {
 
 export type Marquee = {
   _type: "marquee";
-  items: Array<{
-    text?: string;
-    _type: "marqueeText";
-    _key: string;
-  } | {
+  disabled?: boolean;
+  words?: Array<string>;
+  logos?: Array<{
     _key: string;
   } & Figure>;
   speed?: number;
@@ -81,12 +83,14 @@ export type Marquee = {
 
 export type DividerImage = {
   _type: "dividerImage";
+  disabled?: boolean;
   image: Figure;
   size?: "small" | "medium" | "large" | "full";
 };
 
 export type Gallery = {
   _type: "gallery";
+  disabled?: boolean;
   heading?: string;
   images: Array<{
     _key: string;
@@ -97,6 +101,7 @@ export type Gallery = {
 
 export type MediaText = {
   _type: "mediaText";
+  disabled?: boolean;
   image: Figure;
   heading?: string;
   content?: BlockContentTextOnly;
@@ -106,14 +111,100 @@ export type MediaText = {
 
 export type RichTextSection = {
   _type: "richTextSection";
+  disabled?: boolean;
   heading?: string;
   content: BlockContent;
   maxWidth?: "narrow" | "normal" | "wide" | "full";
   align?: "left" | "center";
 };
 
+export type VisitShop = {
+  _type: "visitShop";
+  disabled?: boolean;
+  title?: string;
+  media?: "map" | "photo";
+  background?: "bone" | "ink" | "cab";
+};
+
+export type CardGrid = {
+  _type: "cardGrid";
+  disabled?: boolean;
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  linkLabel?: string;
+  link?: Link;
+  style?: "cards" | "list";
+  items: Array<{
+    _key: string;
+  } & CardGridItem>;
+  background?: "ink" | "cab" | "bone";
+  spacing?: "normal" | "compact";
+  numbered?: boolean;
+  dials?: boolean;
+  divider?: boolean;
+};
+
+export type SingleColumn = {
+  _type: "singleColumn";
+  disabled?: boolean;
+  eyebrow?: string;
+  content?: BlockContent;
+  align?: "left" | "center";
+  width?: "narrow" | "normal" | "wide" | "full";
+  mediaType?: "none" | "image";
+  image?: Figure;
+  mediaPosition?: "above" | "below";
+  mediaHeight?: "natural" | "small" | "medium" | "large" | "full";
+  fullBleed?: boolean;
+  tagLabel?: string;
+  tagTitle?: string;
+  tagText?: string;
+  tagLink?: Link;
+  tagLinkLabel?: string;
+  background?: "ink" | "cab" | "bone" | "orange";
+  spacing?: "normal" | "compact";
+  noPaddingTop?: boolean;
+  noPaddingBottom?: boolean;
+  divider?: boolean;
+};
+
+export type TwoColumn = {
+  _type: "twoColumn";
+  disabled?: boolean;
+  eyebrow?: string;
+  title?: string;
+  left?: Array<{
+    _key: string;
+  } & ColumnText | {
+    _key: string;
+  } & ColumnImage | {
+    _key: string;
+  } & ColumnImagePair | {
+    _key: string;
+  } & ColumnAccordion>;
+  right?: Array<{
+    _key: string;
+  } & ColumnText | {
+    _key: string;
+  } & ColumnImage | {
+    _key: string;
+  } & ColumnImagePair | {
+    _key: string;
+  } & ColumnAccordion>;
+  split?: "30-70" | "40-60" | "50-50" | "60-40" | "70-30" | "auto-left" | "auto-right";
+  mobileFirst?: "left" | "right";
+  background?: "ink" | "cab" | "bone" | "orange";
+  verticalAlign?: "center" | "top";
+  spacing?: "normal" | "compact";
+  noPaddingTop?: boolean;
+  noPaddingBottom?: boolean;
+  divider?: boolean;
+};
+
 export type HeroSection = {
   _type: "heroSection";
+  disabled?: boolean;
   eyebrow?: string;
   heading: string;
   body?: BlockContent;
@@ -124,6 +215,56 @@ export type HeroSection = {
   image?: Figure;
   videoUrl?: string;
   alignment?: "left" | "center";
+};
+
+export type PageTitle = {
+  _type: "pageTitle";
+  disabled?: boolean;
+  title?: string;
+  intro?: string;
+  showTrail?: boolean;
+};
+
+export type ColumnAccordion = {
+  _type: "columnAccordion";
+  items: Array<{
+    _key: string;
+  } & Accordion>;
+  firstOpen?: boolean;
+};
+
+export type ColumnImagePair = {
+  _type: "columnImagePair";
+  image: Figure;
+  secondImage?: Figure;
+};
+
+export type ColumnImage = {
+  _type: "columnImage";
+  image: Figure;
+  fullBleed?: boolean;
+  tagTitle?: string;
+  tagLabel?: string;
+  tagText?: string;
+  tagLinkLabel?: string;
+  tagLink?: Link;
+};
+
+export type ColumnText = {
+  _type: "columnText";
+  content?: BlockContent;
+};
+
+export type CardGridItem = {
+  _type: "cardGridItem";
+  image?: Figure;
+  badge?: string;
+  badgeHighlight?: boolean;
+  kicker?: string;
+  title: string;
+  text?: string;
+  linkLabel?: string;
+  link?: Link;
 };
 
 export type NavItem = {
@@ -198,7 +339,7 @@ export type BlockContent = Array<{
     _type: "span";
     _key: string;
   }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote" | "small";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
     _key: string;
@@ -207,14 +348,41 @@ export type BlockContent = Array<{
   _type: "block";
   _key: string;
 } | {
+  buttons?: Array<{
+    _key: string;
+  } & Button>;
+  align?: "left" | "center" | "right";
+  _type: "ptButtons";
   _key: string;
-} & Figure>;
+} | {
+  items?: Array<{
+    label?: string;
+    title: string;
+    text?: string;
+    _type: "infoStripItem";
+    _key: string;
+  }>;
+  _type: "infoStrip";
+  _key: string;
+} | {
+  items?: Array<string>;
+  _type: "highlights";
+  _key: string;
+} | {
+  _key: string;
+} & Figure | {
+  spacing?: "small" | "medium" | "large";
+  _type: "divider";
+  _key: string;
+}>;
 
 export type Button = {
   _type: "button";
   buttonText: string;
   link?: Link;
   variant?: "primary" | "secondary" | "text";
+  tone?: "auto" | "orange" | "bone" | "ink";
+  arrow?: boolean;
 };
 
 export type PageReference = {
@@ -233,9 +401,11 @@ export type HomePageReference = {
 
 export type Link = {
   _type: "link";
-  linkType?: "href" | "page";
+  linkType?: "href" | "page" | "phone" | "email";
   href?: string;
   page?: PageReference | HomePageReference;
+  phone?: string;
+  email?: string;
   openInNewTab?: boolean;
 };
 
@@ -261,7 +431,17 @@ export type Page = {
   hasTransparentHeader?: boolean;
   pageBuilder?: Array<{
     _key: string;
+  } & PageTitle | {
+    _key: string;
   } & HeroSection | {
+    _key: string;
+  } & TwoColumn | {
+    _key: string;
+  } & SingleColumn | {
+    _key: string;
+  } & CardGrid | {
+    _key: string;
+  } & VisitShop | {
     _key: string;
   } & RichTextSection | {
     _key: string;
@@ -298,7 +478,17 @@ export type HomePage = {
   hasTransparentHeader?: boolean;
   pageBuilder?: Array<{
     _key: string;
+  } & PageTitle | {
+    _key: string;
   } & HeroSection | {
+    _key: string;
+  } & TwoColumn | {
+    _key: string;
+  } & SingleColumn | {
+    _key: string;
+  } & CardGrid | {
+    _key: string;
+  } & VisitShop | {
     _key: string;
   } & RichTextSection | {
     _key: string;
@@ -386,6 +576,23 @@ export type Settings = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
+  };
+  shopInfo?: {
+    address?: string;
+    cityLine?: string;
+    phone?: string;
+    email?: string;
+    mapUrl?: string;
+    hours?: Array<{
+      days: string;
+      opens: string;
+      closes: string;
+      weekdays?: Array<string>;
+      _type: "hoursRow";
+      _key: string;
+    }>;
+    photo?: Figure;
+    note?: string;
   };
   metaTitle?: string;
   metaDescription?: string;
@@ -628,11 +835,11 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | HeroSection | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | VisitShop | CardGrid | SingleColumn | TwoColumn | HeroSection | PageTitle | ColumnAccordion | ColumnImagePair | ColumnImage | ColumnText | CardGridItem | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]
+// Query: *[_type == "settings"][0]{  ...,  promoBar{..., link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}},  cookieConsent{..., link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}
 export type SettingsQueryResult = {
   _id: string;
   _type: "settings";
@@ -648,6 +855,23 @@ export type SettingsQueryResult = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  shopInfo?: {
+    address?: string;
+    cityLine?: string;
+    phone?: string;
+    email?: string;
+    mapUrl?: string;
+    hours?: Array<{
+      days: string;
+      opens: string;
+      closes: string;
+      weekdays?: Array<string>;
+      _type: "hoursRow";
+      _key: string;
+    }>;
+    photo?: Figure;
+    note?: string;
+  };
   metaTitle?: string;
   metaDescription?: string;
   ogImage?: {
@@ -658,49 +882,193 @@ export type SettingsQueryResult = {
     alt?: string;
     _type: "image";
   };
-  promoBar?: {
+  promoBar: {
     enabled?: boolean;
     text?: string;
-    link?: Link;
-  };
-  cookieConsent?: {
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+  } | null;
+  cookieConsent: {
     message?: string;
-    link?: Link;
-  };
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+  } | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
-// Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current  }      }        }      },    },  }
-export type GetPageQueryResult = {
+// Variable: navigationQuery
+// Query: *[_type == "navigation"][0]{  items[]{    _key,    label,    link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))},    children[]{_key, label, link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  },  ctaButton {  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}
+export type NavigationQueryResult = {
+  items: Array<{
+    _key: string;
+    label: string;
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    children: Array<{
+      _key: string;
+      label: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    }> | null;
+  }> | null;
+  ctaButton: {
+    _type: "button";
+    buttonText: string;
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    variant?: "primary" | "secondary" | "text";
+    tone?: "auto" | "bone" | "ink" | "orange";
+    arrow?: boolean;
+  } | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: footerQuery
+// Query: *[_type == "footer"][0]{  blurb,  columns[]{    _key,    title,    links[]{_key, label, link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  },  social,  copyright}
+export type FooterQueryResult = {
+  blurb: string | null;
+  columns: Array<{
+    _key: string;
+    title: string;
+    links: Array<{
+      _key: string;
+      label: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    }> | null;
+  }> | null;
+  social: Array<{
+    _key: string;
+  } & SocialLink> | null;
+  copyright: string | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: homePageQuery
+// Query: *[_type == "homePage"][0]{    _id,    _type,    seo,      // Disabled blocks stay in the document but never reach the page.  "pageBuilder": pageBuilder[disabled != true]{    ...,    _type == "heroSection" => {      body[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      ctas[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    // The trail and the default title come from the page itself.    _type == "pageTitle" => {"pageName": ^.name},    _type == "visitShop" => {      "shopInfo": *[_type == "settings"][0].shopInfo    },    _type == "cardGrid" => {      link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))},      items[]{..., link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    _type == "singleColumn" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}    },    _type == "twoColumn" => {      "left": left[]{  ...,  _type == "columnText" => {content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}},  _type == "columnImage" => {tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}},  _type == "columnAccordion" => {    items[]{..., content[]{..., markDefs[]{..., _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}}  }},      "right": right[]{  ...,  _type == "columnText" => {content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}},  _type == "columnImage" => {tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}},  _type == "columnAccordion" => {    items[]{..., content[]{..., markDefs[]{..., _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}}  }}    },    _type == "richTextSection" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}    },    _type == "mediaText" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      button{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    _type == "accordionList" => {      items[]{..., content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}}    },    _type == "columnsSection" => {      columns[]{..., content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}}    },    _type == "contactFormSection" => {      intro[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}    },    _type == "callToAction" => {      body[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      button{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },  }  }
+export type HomePageQueryResult = {
   _id: string;
-  _type: "page";
-  name: string;
-  slug: Slug;
+  _type: "homePage";
+  seo: Seo | null;
   pageBuilder: Array<{
     _key: string;
     _type: "accordionList";
+    disabled?: boolean;
     heading?: string;
     items: Array<{
       _key: string;
-    } & Accordion>;
+      _type: "accordion";
+      title: string;
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    }>;
   } | {
     _key: string;
     _type: "callToAction";
+    disabled?: boolean;
     eyebrow?: string;
     heading: string;
-    body?: BlockContentTextOnly;
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
     button: {
       _type: "button";
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "href" | "page";
+        linkType?: "email" | "href" | "page" | "phone";
         href?: string;
-        page: string | null;
+        page: string | "";
+        phone?: string;
+        email?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
     } | null;
     image?: {
       asset?: SanityImageAssetReference;
@@ -709,32 +1077,176 @@ export type GetPageQueryResult = {
       crop?: SanityImageCrop;
       _type: "image";
     };
-    theme?: "dark" | "light";
+    theme?: "brand" | "dark" | "light";
     contentAlignment?: "imageFirst" | "textFirst";
   } | {
     _key: string;
+    _type: "cardGrid";
+    disabled?: boolean;
+    eyebrow?: string;
+    title?: string;
+    intro?: string;
+    linkLabel?: string;
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    style?: "cards" | "list";
+    items: Array<{
+      _key: string;
+      _type: "cardGridItem";
+      image?: Figure;
+      badge?: string;
+      badgeHighlight?: boolean;
+      kicker?: string;
+      title: string;
+      text?: string;
+      linkLabel?: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    }>;
+    background?: "bone" | "cab" | "ink";
+    spacing?: "compact" | "normal";
+    numbered?: boolean;
+    dials?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
     _type: "columnsSection";
+    disabled?: boolean;
     heading?: string;
-    columns?: Array<{
-      content?: BlockContent;
+    columns: Array<{
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
       _type: "column";
       _key: string;
-    }>;
+    }> | null;
   } | {
     _key: string;
     _type: "contactFormSection";
+    disabled?: boolean;
     heading?: string;
-    intro?: BlockContentTextOnly;
+    intro: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
     submitLabel?: string;
     successMessage?: string;
   } | {
     _key: string;
     _type: "dividerImage";
+    disabled?: boolean;
     image: Figure;
     size?: "full" | "large" | "medium" | "small";
   } | {
     _key: string;
     _type: "gallery";
+    disabled?: boolean;
     heading?: string;
     images: Array<{
       _key: string;
@@ -744,12 +1256,102 @@ export type GetPageQueryResult = {
   } | {
     _key: string;
     _type: "heroSection";
+    disabled?: boolean;
     eyebrow?: string;
     heading: string;
-    body?: BlockContent;
-    ctas?: Array<{
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
       _key: string;
-    } & Button>;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }> | null;
+    ctas: Array<{
+      _key: string;
+      _type: "button";
+      buttonText: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+      variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
+    }> | null;
     backgroundType?: "image" | "video";
     image?: Figure;
     videoUrl?: string;
@@ -757,31 +1359,1503 @@ export type GetPageQueryResult = {
   } | {
     _key: string;
     _type: "marquee";
-    items: Array<{
+    disabled?: boolean;
+    words?: Array<string>;
+    logos?: Array<{
       _key: string;
-    } & Figure | {
-      text?: string;
-      _type: "marqueeText";
-      _key: string;
-    }>;
+    } & Figure>;
     speed?: number;
     reverse?: boolean;
     pausable?: boolean;
   } | {
     _key: string;
     _type: "mediaText";
+    disabled?: boolean;
     image: Figure;
     heading?: string;
-    content?: BlockContentTextOnly;
-    button?: Button;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    button: {
+      _type: "button";
+      buttonText: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+      variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
+    } | null;
     imagePosition?: "left" | "right";
   } | {
     _key: string;
+    _type: "pageTitle";
+    disabled?: boolean;
+    title?: string;
+    intro?: string;
+    showTrail?: boolean;
+    pageName: null;
+  } | {
+    _key: string;
     _type: "richTextSection";
+    disabled?: boolean;
     heading?: string;
-    content: BlockContent;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }>;
     maxWidth?: "full" | "narrow" | "normal" | "wide";
     align?: "center" | "left";
+  } | {
+    _key: string;
+    _type: "singleColumn";
+    disabled?: boolean;
+    eyebrow?: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }> | null;
+    align?: "center" | "left";
+    width?: "full" | "narrow" | "normal" | "wide";
+    mediaType?: "image" | "none";
+    image?: Figure;
+    mediaPosition?: "above" | "below";
+    mediaHeight?: "full" | "large" | "medium" | "natural" | "small";
+    fullBleed?: boolean;
+    tagLabel?: string;
+    tagTitle?: string;
+    tagText?: string;
+    tagLink: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    tagLinkLabel?: string;
+    background?: "bone" | "cab" | "ink" | "orange";
+    spacing?: "compact" | "normal";
+    noPaddingTop?: boolean;
+    noPaddingBottom?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
+    _type: "twoColumn";
+    disabled?: boolean;
+    eyebrow?: string;
+    title?: string;
+    left: Array<{
+      _key: string;
+      _type: "columnAccordion";
+      items: Array<{
+        _key: string;
+        _type: "accordion";
+        title: string;
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            _key: string;
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+      }>;
+      firstOpen?: boolean;
+    } | {
+      _key: string;
+      _type: "columnImage";
+      image: Figure;
+      fullBleed?: boolean;
+      tagTitle?: string;
+      tagLabel?: string;
+      tagText?: string;
+      tagLinkLabel?: string;
+      tagLink: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    } | {
+      _key: string;
+      _type: "columnImagePair";
+      image: Figure;
+      secondImage?: Figure;
+    } | {
+      _key: string;
+      _type: "columnText";
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
+    }> | null;
+    right: Array<{
+      _key: string;
+      _type: "columnAccordion";
+      items: Array<{
+        _key: string;
+        _type: "accordion";
+        title: string;
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            _key: string;
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+      }>;
+      firstOpen?: boolean;
+    } | {
+      _key: string;
+      _type: "columnImage";
+      image: Figure;
+      fullBleed?: boolean;
+      tagTitle?: string;
+      tagLabel?: string;
+      tagText?: string;
+      tagLinkLabel?: string;
+      tagLink: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    } | {
+      _key: string;
+      _type: "columnImagePair";
+      image: Figure;
+      secondImage?: Figure;
+    } | {
+      _key: string;
+      _type: "columnText";
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
+    }> | null;
+    split?: "30-70" | "40-60" | "50-50" | "60-40" | "70-30" | "auto-left" | "auto-right";
+    mobileFirst?: "left" | "right";
+    background?: "bone" | "cab" | "ink" | "orange";
+    verticalAlign?: "center" | "top";
+    spacing?: "compact" | "normal";
+    noPaddingTop?: boolean;
+    noPaddingBottom?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
+    _type: "visitShop";
+    disabled?: boolean;
+    title?: string;
+    media?: "map" | "photo";
+    background?: "bone" | "cab" | "ink";
+    shopInfo: {
+      address?: string;
+      cityLine?: string;
+      phone?: string;
+      email?: string;
+      mapUrl?: string;
+      hours?: Array<{
+        days: string;
+        opens: string;
+        closes: string;
+        weekdays?: Array<string>;
+        _type: "hoursRow";
+        _key: string;
+      }>;
+      photo?: Figure;
+      note?: string;
+    } | null;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: getPageQuery
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    seo,      // Disabled blocks stay in the document but never reach the page.  "pageBuilder": pageBuilder[disabled != true]{    ...,    _type == "heroSection" => {      body[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      ctas[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    // The trail and the default title come from the page itself.    _type == "pageTitle" => {"pageName": ^.name},    _type == "visitShop" => {      "shopInfo": *[_type == "settings"][0].shopInfo    },    _type == "cardGrid" => {      link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))},      items[]{..., link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    _type == "singleColumn" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}    },    _type == "twoColumn" => {      "left": left[]{  ...,  _type == "columnText" => {content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}},  _type == "columnImage" => {tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}},  _type == "columnAccordion" => {    items[]{..., content[]{..., markDefs[]{..., _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}}  }},      "right": right[]{  ...,  _type == "columnText" => {content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}},  _type == "columnImage" => {tagLink {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}},  _type == "columnAccordion" => {    items[]{..., content[]{..., markDefs[]{..., _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}}}  }}    },    _type == "richTextSection" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}    },    _type == "mediaText" => {      content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      button{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },    _type == "accordionList" => {      items[]{..., content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}}    },    _type == "columnsSection" => {      columns[]{..., content[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}}    },    _type == "contactFormSection" => {      intro[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }}    },    _type == "callToAction" => {      body[]{  ...,  markDefs[]{    ...,    _type == "link" => {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}  },  _type == "ptButtons" => {    buttons[]{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}  }},      button{  ...,  link {  ...,  "page": coalesce(page->slug.current, select(page->_type == "homePage" => ""))}}    },  }  }
+export type GetPageQueryResult = {
+  _id: string;
+  _type: "page";
+  name: string;
+  slug: Slug;
+  seo: Seo | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "accordionList";
+    disabled?: boolean;
+    heading?: string;
+    items: Array<{
+      _key: string;
+      _type: "accordion";
+      title: string;
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    }>;
+  } | {
+    _key: string;
+    _type: "callToAction";
+    disabled?: boolean;
+    eyebrow?: string;
+    heading: string;
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    button: {
+      _type: "button";
+      buttonText: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+      variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
+    } | null;
+    image?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    theme?: "brand" | "dark" | "light";
+    contentAlignment?: "imageFirst" | "textFirst";
+  } | {
+    _key: string;
+    _type: "cardGrid";
+    disabled?: boolean;
+    eyebrow?: string;
+    title?: string;
+    intro?: string;
+    linkLabel?: string;
+    link: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    style?: "cards" | "list";
+    items: Array<{
+      _key: string;
+      _type: "cardGridItem";
+      image?: Figure;
+      badge?: string;
+      badgeHighlight?: boolean;
+      kicker?: string;
+      title: string;
+      text?: string;
+      linkLabel?: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    }>;
+    background?: "bone" | "cab" | "ink";
+    spacing?: "compact" | "normal";
+    numbered?: boolean;
+    dials?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
+    _type: "columnsSection";
+    disabled?: boolean;
+    heading?: string;
+    columns: Array<{
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
+      _type: "column";
+      _key: string;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "contactFormSection";
+    disabled?: boolean;
+    heading?: string;
+    intro: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    submitLabel?: string;
+    successMessage?: string;
+  } | {
+    _key: string;
+    _type: "dividerImage";
+    disabled?: boolean;
+    image: Figure;
+    size?: "full" | "large" | "medium" | "small";
+  } | {
+    _key: string;
+    _type: "gallery";
+    disabled?: boolean;
+    heading?: string;
+    images: Array<{
+      _key: string;
+    } & Figure>;
+    layout?: "carousel" | "grid";
+    columns?: 2 | 3 | 4;
+  } | {
+    _key: string;
+    _type: "heroSection";
+    disabled?: boolean;
+    eyebrow?: string;
+    heading: string;
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }> | null;
+    ctas: Array<{
+      _key: string;
+      _type: "button";
+      buttonText: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+      variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
+    }> | null;
+    backgroundType?: "image" | "video";
+    image?: Figure;
+    videoUrl?: string;
+    alignment?: "center" | "left";
+  } | {
+    _key: string;
+    _type: "marquee";
+    disabled?: boolean;
+    words?: Array<string>;
+    logos?: Array<{
+      _key: string;
+    } & Figure>;
+    speed?: number;
+    reverse?: boolean;
+    pausable?: boolean;
+  } | {
+    _key: string;
+    _type: "mediaText";
+    disabled?: boolean;
+    image: Figure;
+    heading?: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    button: {
+      _type: "button";
+      buttonText: string;
+      link: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+      variant?: "primary" | "secondary" | "text";
+      tone?: "auto" | "bone" | "ink" | "orange";
+      arrow?: boolean;
+    } | null;
+    imagePosition?: "left" | "right";
+  } | {
+    _key: string;
+    _type: "pageTitle";
+    disabled?: boolean;
+    title?: string;
+    intro?: string;
+    showTrail?: boolean;
+    pageName: string;
+  } | {
+    _key: string;
+    _type: "richTextSection";
+    disabled?: boolean;
+    heading?: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }>;
+    maxWidth?: "full" | "narrow" | "normal" | "wide";
+    align?: "center" | "left";
+  } | {
+    _key: string;
+    _type: "singleColumn";
+    disabled?: boolean;
+    eyebrow?: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      spacing?: "large" | "medium" | "small";
+      _type: "divider";
+      _key: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "figure";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      markDefs: null;
+    } | {
+      items?: Array<string>;
+      _type: "highlights";
+      _key: string;
+      markDefs: null;
+    } | {
+      items?: Array<{
+        label?: string;
+        title: string;
+        text?: string;
+        _type: "infoStripItem";
+        _key: string;
+      }>;
+      _type: "infoStrip";
+      _key: string;
+      markDefs: null;
+    } | {
+      buttons: Array<{
+        _key: string;
+        _type: "button";
+        buttonText: string;
+        link: {
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        } | null;
+        variant?: "primary" | "secondary" | "text";
+        tone?: "auto" | "bone" | "ink" | "orange";
+        arrow?: boolean;
+      }> | null;
+      align?: "center" | "left" | "right";
+      _type: "ptButtons";
+      _key: string;
+      markDefs: null;
+    }> | null;
+    align?: "center" | "left";
+    width?: "full" | "narrow" | "normal" | "wide";
+    mediaType?: "image" | "none";
+    image?: Figure;
+    mediaPosition?: "above" | "below";
+    mediaHeight?: "full" | "large" | "medium" | "natural" | "small";
+    fullBleed?: boolean;
+    tagLabel?: string;
+    tagTitle?: string;
+    tagText?: string;
+    tagLink: {
+      _type: "link";
+      linkType?: "email" | "href" | "page" | "phone";
+      href?: string;
+      page: string | "";
+      phone?: string;
+      email?: string;
+      openInNewTab?: boolean;
+    } | null;
+    tagLinkLabel?: string;
+    background?: "bone" | "cab" | "ink" | "orange";
+    spacing?: "compact" | "normal";
+    noPaddingTop?: boolean;
+    noPaddingBottom?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
+    _type: "twoColumn";
+    disabled?: boolean;
+    eyebrow?: string;
+    title?: string;
+    left: Array<{
+      _key: string;
+      _type: "columnAccordion";
+      items: Array<{
+        _key: string;
+        _type: "accordion";
+        title: string;
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            _key: string;
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+      }>;
+      firstOpen?: boolean;
+    } | {
+      _key: string;
+      _type: "columnImage";
+      image: Figure;
+      fullBleed?: boolean;
+      tagTitle?: string;
+      tagLabel?: string;
+      tagText?: string;
+      tagLinkLabel?: string;
+      tagLink: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    } | {
+      _key: string;
+      _type: "columnImagePair";
+      image: Figure;
+      secondImage?: Figure;
+    } | {
+      _key: string;
+      _type: "columnText";
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
+    }> | null;
+    right: Array<{
+      _key: string;
+      _type: "columnAccordion";
+      items: Array<{
+        _key: string;
+        _type: "accordion";
+        title: string;
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs: Array<{
+            _key: string;
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          }> | null;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }> | null;
+      }>;
+      firstOpen?: boolean;
+    } | {
+      _key: string;
+      _type: "columnImage";
+      image: Figure;
+      fullBleed?: boolean;
+      tagTitle?: string;
+      tagLabel?: string;
+      tagText?: string;
+      tagLinkLabel?: string;
+      tagLink: {
+        _type: "link";
+        linkType?: "email" | "href" | "page" | "phone";
+        href?: string;
+        page: string | "";
+        phone?: string;
+        email?: string;
+        openInNewTab?: boolean;
+      } | null;
+    } | {
+      _key: string;
+      _type: "columnImagePair";
+      image: Figure;
+      secondImage?: Figure;
+    } | {
+      _key: string;
+      _type: "columnText";
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal" | "small";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          _key: string;
+          _type: "link";
+          linkType?: "email" | "href" | "page" | "phone";
+          href?: string;
+          page: string | "";
+          phone?: string;
+          email?: string;
+          openInNewTab?: boolean;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        spacing?: "large" | "medium" | "small";
+        _type: "divider";
+        _key: string;
+        markDefs: null;
+      } | {
+        _key: string;
+        _type: "figure";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        markDefs: null;
+      } | {
+        items?: Array<string>;
+        _type: "highlights";
+        _key: string;
+        markDefs: null;
+      } | {
+        items?: Array<{
+          label?: string;
+          title: string;
+          text?: string;
+          _type: "infoStripItem";
+          _key: string;
+        }>;
+        _type: "infoStrip";
+        _key: string;
+        markDefs: null;
+      } | {
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          buttonText: string;
+          link: {
+            _type: "link";
+            linkType?: "email" | "href" | "page" | "phone";
+            href?: string;
+            page: string | "";
+            phone?: string;
+            email?: string;
+            openInNewTab?: boolean;
+          } | null;
+          variant?: "primary" | "secondary" | "text";
+          tone?: "auto" | "bone" | "ink" | "orange";
+          arrow?: boolean;
+        }> | null;
+        align?: "center" | "left" | "right";
+        _type: "ptButtons";
+        _key: string;
+        markDefs: null;
+      }> | null;
+    }> | null;
+    split?: "30-70" | "40-60" | "50-50" | "60-40" | "70-30" | "auto-left" | "auto-right";
+    mobileFirst?: "left" | "right";
+    background?: "bone" | "cab" | "ink" | "orange";
+    verticalAlign?: "center" | "top";
+    spacing?: "compact" | "normal";
+    noPaddingTop?: boolean;
+    noPaddingBottom?: boolean;
+    divider?: boolean;
+  } | {
+    _key: string;
+    _type: "visitShop";
+    disabled?: boolean;
+    title?: string;
+    media?: "map" | "photo";
+    background?: "bone" | "cab" | "ink";
+    shopInfo: {
+      address?: string;
+      cityLine?: string;
+      phone?: string;
+      email?: string;
+      mapUrl?: string;
+      hours?: Array<{
+        days: string;
+        opens: string;
+        closes: string;
+        weekdays?: Array<string>;
+        _type: "hoursRow";
+        _key: string;
+      }>;
+      photo?: Figure;
+      note?: string;
+    } | null;
   }> | null;
 } | null;
 
@@ -804,8 +2878,11 @@ export type PagesSlugsResult = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current\n  }\n\n      }\n\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
+    "*[_type == \"settings\"][0]{\n  ...,\n  promoBar{..., link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}},\n  cookieConsent{..., link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}\n}": SettingsQueryResult;
+    "*[_type == \"navigation\"][0]{\n  items[]{\n    _key,\n    label,\n    link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n},\n    children[]{_key, label, link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}\n  },\n  ctaButton {\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n}": NavigationQueryResult;
+    "*[_type == \"footer\"][0]{\n  blurb,\n  columns[]{\n    _key,\n    title,\n    links[]{_key, label, link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}\n  },\n  social,\n  copyright\n}": FooterQueryResult;
+    "\n  *[_type == \"homePage\"][0]{\n    _id,\n    _type,\n    seo,\n    \n  // Disabled blocks stay in the document but never reach the page.\n  \"pageBuilder\": pageBuilder[disabled != true]{\n    ...,\n    _type == \"heroSection\" => {\n      body[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      ctas[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n    // The trail and the default title come from the page itself.\n    _type == \"pageTitle\" => {\"pageName\": ^.name},\n    _type == \"visitShop\" => {\n      \"shopInfo\": *[_type == \"settings\"][0].shopInfo\n    },\n    _type == \"cardGrid\" => {\n      link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n},\n      items[]{..., link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}\n    },\n    _type == \"singleColumn\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n    },\n    _type == \"twoColumn\" => {\n      \"left\": left[]{\n  ...,\n  _type == \"columnText\" => {content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}},\n  _type == \"columnImage\" => {tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}},\n  _type == \"columnAccordion\" => {\n    items[]{..., content[]{..., markDefs[]{..., _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}}}\n  }\n},\n      \"right\": right[]{\n  ...,\n  _type == \"columnText\" => {content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}},\n  _type == \"columnImage\" => {tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}},\n  _type == \"columnAccordion\" => {\n    items[]{..., content[]{..., markDefs[]{..., _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}}}\n  }\n}\n    },\n    _type == \"richTextSection\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}\n    },\n    _type == \"mediaText\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      button{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n    _type == \"accordionList\" => {\n      items[]{..., content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}}\n    },\n    _type == \"columnsSection\" => {\n      columns[]{..., content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}}\n    },\n    _type == \"contactFormSection\" => {\n      intro[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}\n    },\n    _type == \"callToAction\" => {\n      body[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      button{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n  }\n\n  }\n": HomePageQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    seo,\n    \n  // Disabled blocks stay in the document but never reach the page.\n  \"pageBuilder\": pageBuilder[disabled != true]{\n    ...,\n    _type == \"heroSection\" => {\n      body[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      ctas[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n    // The trail and the default title come from the page itself.\n    _type == \"pageTitle\" => {\"pageName\": ^.name},\n    _type == \"visitShop\" => {\n      \"shopInfo\": *[_type == \"settings\"][0].shopInfo\n    },\n    _type == \"cardGrid\" => {\n      link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n},\n      items[]{..., link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}\n    },\n    _type == \"singleColumn\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n    },\n    _type == \"twoColumn\" => {\n      \"left\": left[]{\n  ...,\n  _type == \"columnText\" => {content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}},\n  _type == \"columnImage\" => {tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}},\n  _type == \"columnAccordion\" => {\n    items[]{..., content[]{..., markDefs[]{..., _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}}}\n  }\n},\n      \"right\": right[]{\n  ...,\n  _type == \"columnText\" => {content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}},\n  _type == \"columnImage\" => {tagLink {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}},\n  _type == \"columnAccordion\" => {\n    items[]{..., content[]{..., markDefs[]{..., _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}}}}\n  }\n}\n    },\n    _type == \"richTextSection\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}\n    },\n    _type == \"mediaText\" => {\n      content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      button{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n    _type == \"accordionList\" => {\n      items[]{..., content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}}\n    },\n    _type == \"columnsSection\" => {\n      columns[]{..., content[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}}\n    },\n    _type == \"contactFormSection\" => {\n      intro[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n}\n    },\n    _type == \"callToAction\" => {\n      body[]{\n  ...,\n  markDefs[]{\n    ...,\n    _type == \"link\" => {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n  },\n  _type == \"ptButtons\" => {\n    buttons[]{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n  }\n},\n      button{\n  ...,\n  link {\n  ...,\n  \"page\": coalesce(page->slug.current, select(page->_type == \"homePage\" => \"\"))\n}\n}\n    },\n  }\n\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"page\" && defined(slug.current)] | order(_updatedAt desc) {\n    \"slug\": slug.current,\n    _type,\n    _updatedAt,\n  }\n": SitemapDataResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
   }

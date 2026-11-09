@@ -1,10 +1,11 @@
 import type {Metadata} from 'next'
+import {notFound} from 'next/navigation'
 
-import PageBuilderPage from '@/app/components/PageBuilder'
+import PageBuilder from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
 import {getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
-import {GetPageQueryResult} from '@/sanity.types'
-import {PageOnboarding} from '@/app/components/Onboarding'
+import type {PageBuilderDocument} from '@/sanity/lib/types'
+import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 
 /**
  * Generate the static params for the page.
@@ -32,27 +33,23 @@ export async function generateMetadata(props: PageProps<'/[slug]'>): Promise<Met
     // Metadata should never contain stega
     stega: false,
   })
+  const ogImage = resolveOpenGraphImage(page?.seo?.shareImage)
 
   return {
-    title: page?.name,
+    // An editor's SEO title is used as written (it often already names the shop);
+    // otherwise the page name goes through the "Name | Kickaxe Guitars" template.
+    title: page?.seo?.metaTitle ? {absolute: page.seo.metaTitle} : page?.name,
+    ...(page?.seo?.metaDescription && {description: page.seo.metaDescription}),
+    ...(ogImage && {openGraph: {images: [ogImage]}}),
+    ...(page?.seo?.noIndex && {robots: {index: false}}),
   } satisfies Metadata
 }
 
 export default async function Page(props: PageProps<'/[slug]'>) {
   const params = await props.params
-  const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
+  const {data: page} = await sanityFetch({query: getPageQuery, params})
 
-  if (!page?._id) {
-    return (
-      <div className="py-40">
-        <PageOnboarding />
-      </div>
-    )
-  }
+  if (!page?._id) notFound()
 
-  return (
-    <div className="my-12 lg:my-24">
-      <PageBuilderPage page={page as GetPageQueryResult} />
-    </div>
-  )
+  return <PageBuilder page={page as PageBuilderDocument} />
 }

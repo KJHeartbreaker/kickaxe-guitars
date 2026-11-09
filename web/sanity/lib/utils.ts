@@ -1,6 +1,6 @@
 import {Link} from '@/sanity.types'
 import {dataset, projectId, studioUrl} from '@/sanity/lib/api'
-import {createDataAttribute, CreateDataAttributeProps} from 'next-sanity'
+import {createDataAttribute, CreateDataAttributeProps, stegaClean} from 'next-sanity'
 import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
 import {DereferencedLink} from '@/sanity/lib/types'
 
@@ -27,8 +27,10 @@ export function resolveOpenGraphImage(
 }
 
 // Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
-export function linkResolver(link: Link | DereferencedLink | undefined) {
-  if (!link) return null
+export function linkResolver(rawLink: Link | DereferencedLink | undefined) {
+  if (!rawLink) return null
+  // In draft mode strings carry Visual Editing (stega) markers; they must not end up in hrefs.
+  const link = stegaClean(rawLink)
 
   // If linkType is not set but href is, lets set linkType to "href".  This comes into play when pasting links into the portable text editor because a link type is not assumed.
   if (!link.linkType && link.href) {
@@ -39,10 +41,18 @@ export function linkResolver(link: Link | DereferencedLink | undefined) {
     case 'href':
       return link.href || null
     case 'page':
-      if (link?.page && typeof link.page === 'string') {
+      // Pages dereference to their slug; the home page dereferences to "".
+      if (typeof link?.page === 'string') {
         return `/${link.page}`
       }
       return null
+    case 'phone': {
+      // Keep digits and a leading +, so "403-410-9199" or "(403) 410 9199" both work.
+      const number = link.phone?.replace(/[^\d+]/g, '')
+      return number ? `tel:${number}` : null
+    }
+    case 'email':
+      return link.email ? `mailto:${link.email.trim()}` : null
     default:
       return null
   }
