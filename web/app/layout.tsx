@@ -92,6 +92,7 @@ export default async function RootLayout({children}: LayoutProps<'/'>) {
   return (
     <html
       lang="en-CA"
+      data-scroll-behavior="smooth"
       className={`${bigShoulders.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">

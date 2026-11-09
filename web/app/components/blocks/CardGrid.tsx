@@ -4,7 +4,7 @@ import FeatureGrid, {type FeatureGridItem} from '@/app/components/FeatureGrid'
 import ResolvedLink from '@/app/components/ResolvedLink'
 import {rowBackground, rowPadding} from '@/app/components/blocks/rowTheme'
 import type {Block, DereferencedLink} from '@/sanity/lib/types'
-import {linkResolver} from '@/sanity/lib/utils'
+import {linkArrow, linkResolver} from '@/sanity/lib/utils'
 
 /**
  * Card Grid: an optional section heading (small label, title, intro and a
@@ -51,7 +51,7 @@ export default function CardGrid({block}: {block: Block<'cardGrid'>}) {
                     link={link!}
                     className={`inline-flex min-h-11 items-center gap-2 font-mono text-sm underline decoration-1 underline-offset-4 ${light ? 'text-ink hover:text-stone' : 'text-bone hover:text-orange'}`}
                   >
-                    {block.linkLabel} <span aria-hidden="true">→</span>
+                    {block.linkLabel} <span aria-hidden="true">{linkArrow(link)}</span>
                   </ResolvedLink>
                 )}
               </div>

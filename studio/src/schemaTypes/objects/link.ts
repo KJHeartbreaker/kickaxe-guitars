@@ -4,10 +4,16 @@ import type {Link} from '../../../sanity.types'
 
 /**
  * Link object. The editor first picks the link type, then provides an external
- * URL, an internal reference (a page or the home page), a phone number or an
- * email address. Phone and email become tel: and mailto: links on the site.
+ * URL, an internal reference (a page or the home page), a phone number, an
+ * email address, or a section further down the same page. Phone and email
+ * become tel: and mailto: links on the site; a section becomes #name.
  * Learn more: https://www.sanity.io/docs/studio/object-type
  */
+
+/** Jump-link names: lower-case letters, numbers and single dashes, e.g. rick-turner. */
+export function isJumpName(value: string) {
+  return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(value)
+}
 
 export const link = defineType({
   name: 'link',
@@ -27,6 +33,7 @@ export const link = defineType({
           {title: 'Internal page', value: 'page'},
           {title: 'Phone', value: 'phone'},
           {title: 'Email', value: 'email'},
+          {title: 'Section on this page', value: 'section'},
         ],
         layout: 'radio',
         direction: 'horizontal',
@@ -113,11 +120,42 @@ export const link = defineType({
       ],
     }),
     defineField({
+      name: 'section',
+      title: 'Section on this page',
+      type: 'string',
+      description:
+        'The jump-link name of a block on this page, e.g. teye. Set it on that block under “Jump-link name”.',
+      placeholder: 'teye',
+      hidden: ({parent}) => parent?.linkType !== 'section',
+      validation: (Rule) => [
+        Rule.custom((value, context) => {
+          const parent = context.parent as {linkType?: string}
+          if (parent?.linkType !== 'section' || !value) return true
+          return isJumpName(String(value))
+            ? true
+            : 'Use lower-case letters, numbers and dashes only, e.g. rick-turner'
+        }),
+        Rule.custom((value, context) => {
+          const parent = context.parent as {linkType?: string}
+          if (parent?.linkType !== 'section') return true
+          if (!value) return 'Add the section’s jump-link name, or this link won’t show on the site'
+          // Only pages have a page builder; links in settings or the menu can't be checked.
+          const blocks = (context.document as {pageBuilder?: {anchor?: string; disabled?: boolean}[]})
+            ?.pageBuilder
+          if (!Array.isArray(blocks)) return true
+          return blocks.some((block) => block.anchor === value && !block.disabled)
+            ? true
+            : `No block on this page has the jump-link name “${value}”`
+        }).warning(),
+      ],
+    }),
+    defineField({
       name: 'openInNewTab',
       title: 'Open in new tab',
       type: 'boolean',
       initialValue: false,
-      hidden: ({parent}) => parent?.linkType === 'phone' || parent?.linkType === 'email',
+      hidden: ({parent}) =>
+        parent?.linkType === 'phone' || parent?.linkType === 'email' || parent?.linkType === 'section',
     }),
   ],
 })

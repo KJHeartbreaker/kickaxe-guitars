@@ -53,9 +53,19 @@ export function linkResolver(rawLink: Link | DereferencedLink | undefined) {
     }
     case 'email':
       return link.email ? `mailto:${link.email.trim()}` : null
+    case 'section': {
+      // A block further down this page, by its jump-link name.
+      const section = (link as DereferencedLink).section?.trim()
+      return section ? `#${section}` : null
+    }
     default:
       return null
   }
+}
+
+/** Links to a section on the same page point down; everything else points on. */
+export function linkArrow(rawLink: Link | DereferencedLink | null | undefined) {
+  return stegaClean(rawLink?.linkType) === 'section' ? '↓' : '→'
 }
 
 type DataAttributeConfig = CreateDataAttributeProps &

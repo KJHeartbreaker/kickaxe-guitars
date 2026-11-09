@@ -38,6 +38,7 @@ export type CallToAction = {
   };
   theme?: "brand" | "light" | "dark";
   contentAlignment?: "textFirst" | "imageFirst";
+  anchor?: string;
 };
 
 export type ColumnsSection = {
@@ -49,6 +50,7 @@ export type ColumnsSection = {
     _type: "column";
     _key: string;
   }>;
+  anchor?: string;
 };
 
 export type ContactFormSection = {
@@ -58,6 +60,7 @@ export type ContactFormSection = {
   intro?: BlockContentTextOnly;
   submitLabel?: string;
   successMessage?: string;
+  anchor?: string;
 };
 
 export type AccordionList = {
@@ -67,6 +70,7 @@ export type AccordionList = {
   items: Array<{
     _key: string;
   } & Accordion>;
+  anchor?: string;
 };
 
 export type Marquee = {
@@ -79,6 +83,7 @@ export type Marquee = {
   speed?: number;
   reverse?: boolean;
   pausable?: boolean;
+  anchor?: string;
 };
 
 export type DividerImage = {
@@ -86,6 +91,7 @@ export type DividerImage = {
   disabled?: boolean;
   image: Figure;
   size?: "small" | "medium" | "large" | "full";
+  anchor?: string;
 };
 
 export type Gallery = {
@@ -97,6 +103,7 @@ export type Gallery = {
   } & Figure>;
   layout?: "grid" | "carousel";
   columns?: 2 | 3 | 4;
+  anchor?: string;
 };
 
 export type MediaText = {
@@ -107,6 +114,7 @@ export type MediaText = {
   content?: BlockContentTextOnly;
   button?: Button;
   imagePosition?: "left" | "right";
+  anchor?: string;
 };
 
 export type RichTextSection = {
@@ -116,6 +124,7 @@ export type RichTextSection = {
   content: BlockContent;
   maxWidth?: "narrow" | "normal" | "wide" | "full";
   align?: "left" | "center";
+  anchor?: string;
 };
 
 export type VisitShop = {
@@ -124,6 +133,7 @@ export type VisitShop = {
   title?: string;
   media?: "map" | "photo";
   background?: "bone" | "ink" | "cab";
+  anchor?: string;
 };
 
 export type CardGrid = {
@@ -143,6 +153,7 @@ export type CardGrid = {
   numbered?: boolean;
   dials?: boolean;
   divider?: boolean;
+  anchor?: string;
 };
 
 export type SingleColumn = {
@@ -167,6 +178,7 @@ export type SingleColumn = {
   noPaddingTop?: boolean;
   noPaddingBottom?: boolean;
   divider?: boolean;
+  anchor?: string;
 };
 
 export type TwoColumn = {
@@ -200,6 +212,7 @@ export type TwoColumn = {
   noPaddingTop?: boolean;
   noPaddingBottom?: boolean;
   divider?: boolean;
+  anchor?: string;
 };
 
 export type HeroSection = {
@@ -215,6 +228,7 @@ export type HeroSection = {
   image?: Figure;
   videoUrl?: string;
   alignment?: "left" | "center";
+  anchor?: string;
 };
 
 export type PageTitle = {
@@ -223,6 +237,7 @@ export type PageTitle = {
   title?: string;
   intro?: string;
   showTrail?: boolean;
+  anchor?: string;
 };
 
 export type ColumnAccordion = {
@@ -401,11 +416,12 @@ export type HomePageReference = {
 
 export type Link = {
   _type: "link";
-  linkType?: "href" | "page" | "phone" | "email";
+  linkType?: "href" | "page" | "phone" | "email" | "section";
   href?: string;
   page?: PageReference | HomePageReference;
   phone?: string;
   email?: string;
+  section?: string;
   openInNewTab?: boolean;
 };
 
@@ -887,11 +903,12 @@ export type SettingsQueryResult = {
     text?: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
   } | null;
@@ -899,11 +916,12 @@ export type SettingsQueryResult = {
     message?: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
   } | null;
@@ -918,11 +936,12 @@ export type NavigationQueryResult = {
     label: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     children: Array<{
@@ -930,11 +949,12 @@ export type NavigationQueryResult = {
       label: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     }> | null;
@@ -944,11 +964,12 @@ export type NavigationQueryResult = {
     buttonText: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     variant?: "primary" | "secondary" | "text";
@@ -970,11 +991,12 @@ export type FooterQueryResult = {
       label: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     }> | null;
@@ -1013,11 +1035,12 @@ export type HomePageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -1025,6 +1048,7 @@ export type HomePageQueryResult = {
         _key: string;
       }> | null;
     }>;
+    anchor?: string;
   } | {
     _key: string;
     _type: "callToAction";
@@ -1043,11 +1067,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1059,11 +1084,12 @@ export type HomePageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -1079,6 +1105,7 @@ export type HomePageQueryResult = {
     };
     theme?: "brand" | "dark" | "light";
     contentAlignment?: "imageFirst" | "textFirst";
+    anchor?: string;
   } | {
     _key: string;
     _type: "cardGrid";
@@ -1089,11 +1116,12 @@ export type HomePageQueryResult = {
     linkLabel?: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     style?: "cards" | "list";
@@ -1109,11 +1137,12 @@ export type HomePageQueryResult = {
       linkLabel?: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     }>;
@@ -1122,6 +1151,7 @@ export type HomePageQueryResult = {
     numbered?: boolean;
     dials?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "columnsSection";
@@ -1140,11 +1170,12 @@ export type HomePageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -1188,11 +1219,12 @@ export type HomePageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -1207,6 +1239,7 @@ export type HomePageQueryResult = {
       _type: "column";
       _key: string;
     }> | null;
+    anchor?: string;
   } | {
     _key: string;
     _type: "contactFormSection";
@@ -1224,11 +1257,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1237,12 +1271,14 @@ export type HomePageQueryResult = {
     }> | null;
     submitLabel?: string;
     successMessage?: string;
+    anchor?: string;
   } | {
     _key: string;
     _type: "dividerImage";
     disabled?: boolean;
     image: Figure;
     size?: "full" | "large" | "medium" | "small";
+    anchor?: string;
   } | {
     _key: string;
     _type: "gallery";
@@ -1253,6 +1289,7 @@ export type HomePageQueryResult = {
     } & Figure>;
     layout?: "carousel" | "grid";
     columns?: 2 | 3 | 4;
+    anchor?: string;
   } | {
     _key: string;
     _type: "heroSection";
@@ -1271,11 +1308,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1319,11 +1357,12 @@ export type HomePageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -1341,11 +1380,12 @@ export type HomePageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -1356,6 +1396,7 @@ export type HomePageQueryResult = {
     image?: Figure;
     videoUrl?: string;
     alignment?: "center" | "left";
+    anchor?: string;
   } | {
     _key: string;
     _type: "marquee";
@@ -1367,6 +1408,7 @@ export type HomePageQueryResult = {
     speed?: number;
     reverse?: boolean;
     pausable?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "mediaText";
@@ -1385,11 +1427,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1401,11 +1444,12 @@ export type HomePageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -1413,6 +1457,7 @@ export type HomePageQueryResult = {
       arrow?: boolean;
     } | null;
     imagePosition?: "left" | "right";
+    anchor?: string;
   } | {
     _key: string;
     _type: "pageTitle";
@@ -1420,6 +1465,7 @@ export type HomePageQueryResult = {
     title?: string;
     intro?: string;
     showTrail?: boolean;
+    anchor?: string;
     pageName: null;
   } | {
     _key: string;
@@ -1438,11 +1484,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1486,11 +1533,12 @@ export type HomePageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -1504,6 +1552,7 @@ export type HomePageQueryResult = {
     }>;
     maxWidth?: "full" | "narrow" | "normal" | "wide";
     align?: "center" | "left";
+    anchor?: string;
   } | {
     _key: string;
     _type: "singleColumn";
@@ -1521,11 +1570,12 @@ export type HomePageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1569,11 +1619,12 @@ export type HomePageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -1597,11 +1648,12 @@ export type HomePageQueryResult = {
     tagText?: string;
     tagLink: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     tagLinkLabel?: string;
@@ -1610,6 +1662,7 @@ export type HomePageQueryResult = {
     noPaddingTop?: boolean;
     noPaddingBottom?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "twoColumn";
@@ -1635,11 +1688,12 @@ export type HomePageQueryResult = {
           markDefs: Array<{
             _key: string;
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           }> | null;
           level?: number;
@@ -1659,11 +1713,12 @@ export type HomePageQueryResult = {
       tagLinkLabel?: string;
       tagLink: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     } | {
@@ -1686,11 +1741,12 @@ export type HomePageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -1734,11 +1790,12 @@ export type HomePageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -1770,11 +1827,12 @@ export type HomePageQueryResult = {
           markDefs: Array<{
             _key: string;
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           }> | null;
           level?: number;
@@ -1794,11 +1852,12 @@ export type HomePageQueryResult = {
       tagLinkLabel?: string;
       tagLink: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     } | {
@@ -1821,11 +1880,12 @@ export type HomePageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -1869,11 +1929,12 @@ export type HomePageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -1894,6 +1955,7 @@ export type HomePageQueryResult = {
     noPaddingTop?: boolean;
     noPaddingBottom?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "visitShop";
@@ -1901,6 +1963,7 @@ export type HomePageQueryResult = {
     title?: string;
     media?: "map" | "photo";
     background?: "bone" | "cab" | "ink";
+    anchor?: string;
     shopInfo: {
       address?: string;
       cityLine?: string;
@@ -1951,11 +2014,12 @@ export type GetPageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -1963,6 +2027,7 @@ export type GetPageQueryResult = {
         _key: string;
       }> | null;
     }>;
+    anchor?: string;
   } | {
     _key: string;
     _type: "callToAction";
@@ -1981,11 +2046,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -1997,11 +2063,12 @@ export type GetPageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -2017,6 +2084,7 @@ export type GetPageQueryResult = {
     };
     theme?: "brand" | "dark" | "light";
     contentAlignment?: "imageFirst" | "textFirst";
+    anchor?: string;
   } | {
     _key: string;
     _type: "cardGrid";
@@ -2027,11 +2095,12 @@ export type GetPageQueryResult = {
     linkLabel?: string;
     link: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     style?: "cards" | "list";
@@ -2047,11 +2116,12 @@ export type GetPageQueryResult = {
       linkLabel?: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     }>;
@@ -2060,6 +2130,7 @@ export type GetPageQueryResult = {
     numbered?: boolean;
     dials?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "columnsSection";
@@ -2078,11 +2149,12 @@ export type GetPageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -2126,11 +2198,12 @@ export type GetPageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -2145,6 +2218,7 @@ export type GetPageQueryResult = {
       _type: "column";
       _key: string;
     }> | null;
+    anchor?: string;
   } | {
     _key: string;
     _type: "contactFormSection";
@@ -2162,11 +2236,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -2175,12 +2250,14 @@ export type GetPageQueryResult = {
     }> | null;
     submitLabel?: string;
     successMessage?: string;
+    anchor?: string;
   } | {
     _key: string;
     _type: "dividerImage";
     disabled?: boolean;
     image: Figure;
     size?: "full" | "large" | "medium" | "small";
+    anchor?: string;
   } | {
     _key: string;
     _type: "gallery";
@@ -2191,6 +2268,7 @@ export type GetPageQueryResult = {
     } & Figure>;
     layout?: "carousel" | "grid";
     columns?: 2 | 3 | 4;
+    anchor?: string;
   } | {
     _key: string;
     _type: "heroSection";
@@ -2209,11 +2287,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -2257,11 +2336,12 @@ export type GetPageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -2279,11 +2359,12 @@ export type GetPageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -2294,6 +2375,7 @@ export type GetPageQueryResult = {
     image?: Figure;
     videoUrl?: string;
     alignment?: "center" | "left";
+    anchor?: string;
   } | {
     _key: string;
     _type: "marquee";
@@ -2305,6 +2387,7 @@ export type GetPageQueryResult = {
     speed?: number;
     reverse?: boolean;
     pausable?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "mediaText";
@@ -2323,11 +2406,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -2339,11 +2423,12 @@ export type GetPageQueryResult = {
       buttonText: string;
       link: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
       variant?: "primary" | "secondary" | "text";
@@ -2351,6 +2436,7 @@ export type GetPageQueryResult = {
       arrow?: boolean;
     } | null;
     imagePosition?: "left" | "right";
+    anchor?: string;
   } | {
     _key: string;
     _type: "pageTitle";
@@ -2358,6 +2444,7 @@ export type GetPageQueryResult = {
     title?: string;
     intro?: string;
     showTrail?: boolean;
+    anchor?: string;
     pageName: string;
   } | {
     _key: string;
@@ -2376,11 +2463,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -2424,11 +2512,12 @@ export type GetPageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -2442,6 +2531,7 @@ export type GetPageQueryResult = {
     }>;
     maxWidth?: "full" | "narrow" | "normal" | "wide";
     align?: "center" | "left";
+    anchor?: string;
   } | {
     _key: string;
     _type: "singleColumn";
@@ -2459,11 +2549,12 @@ export type GetPageQueryResult = {
       markDefs: Array<{
         _key: string;
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       }> | null;
       level?: number;
@@ -2507,11 +2598,12 @@ export type GetPageQueryResult = {
         buttonText: string;
         link: {
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         } | null;
         variant?: "primary" | "secondary" | "text";
@@ -2535,11 +2627,12 @@ export type GetPageQueryResult = {
     tagText?: string;
     tagLink: {
       _type: "link";
-      linkType?: "email" | "href" | "page" | "phone";
+      linkType?: "email" | "href" | "page" | "phone" | "section";
       href?: string;
       page: string | "";
       phone?: string;
       email?: string;
+      section?: string;
       openInNewTab?: boolean;
     } | null;
     tagLinkLabel?: string;
@@ -2548,6 +2641,7 @@ export type GetPageQueryResult = {
     noPaddingTop?: boolean;
     noPaddingBottom?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "twoColumn";
@@ -2573,11 +2667,12 @@ export type GetPageQueryResult = {
           markDefs: Array<{
             _key: string;
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           }> | null;
           level?: number;
@@ -2597,11 +2692,12 @@ export type GetPageQueryResult = {
       tagLinkLabel?: string;
       tagLink: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     } | {
@@ -2624,11 +2720,12 @@ export type GetPageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -2672,11 +2769,12 @@ export type GetPageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -2708,11 +2806,12 @@ export type GetPageQueryResult = {
           markDefs: Array<{
             _key: string;
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           }> | null;
           level?: number;
@@ -2732,11 +2831,12 @@ export type GetPageQueryResult = {
       tagLinkLabel?: string;
       tagLink: {
         _type: "link";
-        linkType?: "email" | "href" | "page" | "phone";
+        linkType?: "email" | "href" | "page" | "phone" | "section";
         href?: string;
         page: string | "";
         phone?: string;
         email?: string;
+        section?: string;
         openInNewTab?: boolean;
       } | null;
     } | {
@@ -2759,11 +2859,12 @@ export type GetPageQueryResult = {
         markDefs: Array<{
           _key: string;
           _type: "link";
-          linkType?: "email" | "href" | "page" | "phone";
+          linkType?: "email" | "href" | "page" | "phone" | "section";
           href?: string;
           page: string | "";
           phone?: string;
           email?: string;
+          section?: string;
           openInNewTab?: boolean;
         }> | null;
         level?: number;
@@ -2807,11 +2908,12 @@ export type GetPageQueryResult = {
           buttonText: string;
           link: {
             _type: "link";
-            linkType?: "email" | "href" | "page" | "phone";
+            linkType?: "email" | "href" | "page" | "phone" | "section";
             href?: string;
             page: string | "";
             phone?: string;
             email?: string;
+            section?: string;
             openInNewTab?: boolean;
           } | null;
           variant?: "primary" | "secondary" | "text";
@@ -2832,6 +2934,7 @@ export type GetPageQueryResult = {
     noPaddingTop?: boolean;
     noPaddingBottom?: boolean;
     divider?: boolean;
+    anchor?: string;
   } | {
     _key: string;
     _type: "visitShop";
@@ -2839,6 +2942,7 @@ export type GetPageQueryResult = {
     title?: string;
     media?: "map" | "photo";
     background?: "bone" | "cab" | "ink";
+    anchor?: string;
     shopInfo: {
       address?: string;
       cityLine?: string;

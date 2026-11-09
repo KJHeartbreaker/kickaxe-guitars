@@ -2,7 +2,7 @@ import {stegaClean} from 'next-sanity'
 import ResolvedLink from '@/app/components/ResolvedLink'
 import Image from '@/app/components/SanityImage'
 import type {DereferencedLink} from '@/sanity/lib/types'
-import {linkResolver} from '@/sanity/lib/utils'
+import {linkArrow, linkResolver} from '@/sanity/lib/utils'
 
 type Figure = {
   asset?: {_ref?: string}
@@ -98,7 +98,7 @@ function Cards({items, light}: {items: FeatureGridItem[]; light: boolean}) {
                   link={item.link!}
                   className={`mt-auto self-start pt-2 font-mono text-[13px] underline decoration-1 underline-offset-4 ${light ? 'text-ink hover:text-stone' : 'text-bone hover:text-orange'}`}
                 >
-                  {item.linkLabel} <span aria-hidden="true">→</span>
+                  {item.linkLabel} <span aria-hidden="true">{linkArrow(item.link)}</span>
                 </ResolvedLink>
               )}
             </div>
@@ -157,6 +157,11 @@ export default function FeatureGrid({
                 {dials && <Dial index={i} count={items.length} light={light} />}
               </div>
             )}
+            {item.kicker && (
+              <p className={`font-mono text-xs tracking-[0.12em] uppercase ${light ? 'text-label' : 'text-muted'}`}>
+                {stegaClean(item.kicker)}
+              </p>
+            )}
             {item.title && (
               <h3
                 className={`font-display text-[30px] leading-none font-extrabold uppercase sm:text-[34px] ${light ? 'text-ink' : 'text-bone'}`}
@@ -172,7 +177,7 @@ export default function FeatureGrid({
                 link={item.link!}
                 className={`mt-auto self-start font-mono text-[13px] underline decoration-1 underline-offset-4 ${light ? 'text-ink hover:text-stone' : 'text-bone hover:text-orange'}`}
               >
-                {item.linkLabel} <span aria-hidden="true">→</span>
+                {item.linkLabel} <span aria-hidden="true">{linkArrow(item.link)}</span>
               </ResolvedLink>
             )}
           </li>

@@ -1,7 +1,7 @@
 import {stegaClean} from 'next-sanity'
 import ResolvedLink from '@/app/components/ResolvedLink'
 import type {DereferencedButton} from '@/sanity/lib/types'
-import {linkResolver} from '@/sanity/lib/utils'
+import {linkArrow, linkResolver} from '@/sanity/lib/utils'
 
 /** The background a button sits on. */
 export type Surface = 'dark' | 'light' | 'brand'
@@ -69,7 +69,7 @@ export default function Button({
   return (
     <ResolvedLink link={button.link!} className={`${classes} ${className}`}>
       {button.buttonText}
-      {arrow && <span aria-hidden="true">→</span>}
+      {arrow && <span aria-hidden="true">{linkArrow(button.link)}</span>}
     </ResolvedLink>
   )
 }
