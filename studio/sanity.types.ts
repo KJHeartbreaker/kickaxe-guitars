@@ -15,29 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: ../sanity.schema.json
-export type PageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "page";
-};
-
-export type PostReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "post";
-};
-
-export type Link = {
-  _type: "link";
-  linkType?: "href" | "page" | "post";
-  href?: string;
-  page?: PageReference;
-  post?: PostReference;
-  openInNewTab?: boolean;
-};
-
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -62,11 +39,139 @@ export type CallToAction = {
   contentAlignment?: "textFirst" | "imageFirst";
 };
 
-export type InfoSection = {
-  _type: "infoSection";
+export type ColumnsSection = {
+  _type: "columnsSection";
   heading?: string;
-  subheading?: string;
-  content?: BlockContent;
+  columns?: Array<{
+    content?: BlockContent;
+    _type: "column";
+    _key: string;
+  }>;
+};
+
+export type ContactFormSection = {
+  _type: "contactFormSection";
+  heading?: string;
+  intro?: BlockContentTextOnly;
+  submitLabel?: string;
+  successMessage?: string;
+};
+
+export type AccordionList = {
+  _type: "accordionList";
+  heading?: string;
+  items: Array<{
+    _key: string;
+  } & Accordion>;
+};
+
+export type Marquee = {
+  _type: "marquee";
+  items: Array<{
+    text?: string;
+    _type: "marqueeText";
+    _key: string;
+  } | {
+    _key: string;
+  } & Figure>;
+  speed?: number;
+  reverse?: boolean;
+  pausable?: boolean;
+};
+
+export type DividerImage = {
+  _type: "dividerImage";
+  image: Figure;
+  size?: "small" | "medium" | "large" | "full";
+};
+
+export type Gallery = {
+  _type: "gallery";
+  heading?: string;
+  images: Array<{
+    _key: string;
+  } & Figure>;
+  layout?: "grid" | "carousel";
+  columns?: 2 | 3 | 4;
+};
+
+export type MediaText = {
+  _type: "mediaText";
+  image: Figure;
+  heading?: string;
+  content?: BlockContentTextOnly;
+  button?: Button;
+  imagePosition?: "left" | "right";
+};
+
+export type RichTextSection = {
+  _type: "richTextSection";
+  heading?: string;
+  content: BlockContent;
+  maxWidth?: "narrow" | "normal" | "wide" | "full";
+  align?: "left" | "center";
+};
+
+export type HeroSection = {
+  _type: "heroSection";
+  eyebrow?: string;
+  heading: string;
+  body?: BlockContent;
+  ctas?: Array<{
+    _key: string;
+  } & Button>;
+  backgroundType?: "image" | "video";
+  image?: Figure;
+  videoUrl?: string;
+  alignment?: "left" | "center";
+};
+
+export type NavItem = {
+  _type: "navItem";
+  label: string;
+  link?: Link;
+  children?: Array<{
+    label: string;
+    link?: Link;
+    _type: "navChild";
+    _key: string;
+  }>;
+};
+
+export type Accordion = {
+  _type: "accordion";
+  title: string;
+  content?: BlockContentTextOnly;
+};
+
+export type Figure = {
+  _type: "figure";
+  asset?: SanityImageAssetReference;
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  caption?: string;
+};
+
+export type SocialLink = {
+  _type: "socialLink";
+  platform: "instagram" | "facebook" | "youtube" | "twitter" | "tiktok" | "spotify" | "soundcloud" | "reverb";
+  url: string;
+};
+
+export type Seo = {
+  _type: "seo";
+  metaTitle?: string;
+  metaDescription?: string;
+  shareImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  noIndex?: boolean;
 };
 
 export type BlockContentTextOnly = Array<{
@@ -79,10 +184,8 @@ export type BlockContentTextOnly = Array<{
   style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
-    href?: string;
-    _type: "link";
     _key: string;
-  }>;
+  } & Link>;
   level?: number;
   _type: "block";
   _key: string;
@@ -98,70 +201,123 @@ export type BlockContent = Array<{
   style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
-    linkType?: "href" | "page" | "post";
-    href?: string;
-    page?: PageReference;
-    post?: PostReference;
-    openInNewTab?: boolean;
-    _type: "link";
     _key: string;
-  }>;
+  } & Link>;
   level?: number;
   _type: "block";
   _key: string;
 } | {
-  asset?: SanityImageAssetReference;
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  _type: "image";
   _key: string;
-}>;
+} & Figure>;
 
 export type Button = {
   _type: "button";
-  buttonText?: string;
+  buttonText: string;
   link?: Link;
+  variant?: "primary" | "secondary" | "text";
 };
 
-export type Settings = {
+export type PageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "page";
+};
+
+export type HomePageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "homePage";
+};
+
+export type Link = {
+  _type: "link";
+  linkType?: "href" | "page";
+  href?: string;
+  page?: PageReference | HomePageReference;
+  openInNewTab?: boolean;
+};
+
+export type Redirect = {
   _id: string;
-  _type: "settings";
+  _type: "redirect";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
-    markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
-      href?: string;
-      page?: PageReference;
-      post?: PostReference;
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
+  from: string;
+  to: string;
+  permanent?: boolean;
+};
+
+export type Page = {
+  _id: string;
+  _type: "page";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  slug: Slug;
+  hasTransparentHeader?: boolean;
+  pageBuilder?: Array<{
     _key: string;
-  }>;
-  ogImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    metadataBase?: string;
-    _type: "image";
-  };
+  } & HeroSection | {
+    _key: string;
+  } & RichTextSection | {
+    _key: string;
+  } & MediaText | {
+    _key: string;
+  } & Gallery | {
+    _key: string;
+  } & DividerImage | {
+    _key: string;
+  } & Marquee | {
+    _key: string;
+  } & AccordionList | {
+    _key: string;
+  } & ContactFormSection | {
+    _key: string;
+  } & ColumnsSection | {
+    _key: string;
+  } & CallToAction>;
+  seo?: Seo;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
+export type HomePage = {
+  _id: string;
+  _type: "homePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hasTransparentHeader?: boolean;
+  pageBuilder?: Array<{
+    _key: string;
+  } & HeroSection | {
+    _key: string;
+  } & RichTextSection | {
+    _key: string;
+  } & MediaText | {
+    _key: string;
+  } & Gallery | {
+    _key: string;
+  } & DividerImage | {
+    _key: string;
+  } & Marquee | {
+    _key: string;
+  } & AccordionList | {
+    _key: string;
+  } & ContactFormSection | {
+    _key: string;
+  } & ColumnsSection | {
+    _key: string;
+  } & CallToAction>;
+  seo?: Seo;
 };
 
 export type SanityImageCrop = {
@@ -180,41 +336,60 @@ export type SanityImageHotspot = {
   width: number;
 };
 
-export type Page = {
+export type Footer = {
   _id: string;
-  _type: "page";
+  _type: "footer";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name: string;
-  slug: Slug;
-  heading: string;
-  subheading?: string;
-  pageBuilder?: Array<{
+  blurb?: string;
+  columns?: Array<{
+    title: string;
+    links?: Array<{
+      label: string;
+      link?: Link;
+      _type: "footerLink";
+      _key: string;
+    }>;
+    _type: "footerColumn";
     _key: string;
-  } & CallToAction | {
+  }>;
+  social?: Array<{
     _key: string;
-  } & InfoSection>;
+  } & SocialLink>;
+  copyright?: string;
 };
 
-export type PersonReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "person";
-};
-
-export type Post = {
+export type Navigation = {
   _id: string;
-  _type: "post";
+  _type: "navigation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  items?: Array<{
+    _key: string;
+  } & NavItem>;
+  ctaButton?: Button;
+};
+
+export type Settings = {
+  _id: string;
+  _type: "settings";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title: string;
-  slug: Slug;
-  content?: BlockContent;
-  excerpt?: string;
-  coverImage?: {
+  siteUrl?: string;
+  logo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -222,32 +397,15 @@ export type Post = {
     alt?: string;
     _type: "image";
   };
-  date?: string;
-  author?: PersonReference;
-};
-
-export type Person = {
-  _id: string;
-  _type: "person";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  firstName: string;
-  lastName: string;
-  picture: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+  promoBar?: {
+    enabled?: boolean;
+    text?: string;
+    link?: Link;
   };
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
+  cookieConsent?: {
+    message?: string;
+    link?: Link;
+  };
 };
 
 export type SanityAssistInstructionTask = {
@@ -470,5 +628,5 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = PageReference | PostReference | Link | SanityImageAssetReference | CallToAction | InfoSection | BlockContentTextOnly | BlockContent | Button | Settings | SanityImageCrop | SanityImageHotspot | Page | PersonReference | Post | Person | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CallToAction | ColumnsSection | ContactFormSection | AccordionList | Marquee | DividerImage | Gallery | MediaText | RichTextSection | HeroSection | NavItem | Accordion | Figure | SocialLink | Seo | BlockContentTextOnly | BlockContent | Button | PageReference | HomePageReference | Link | Redirect | Page | Slug | HomePage | SanityImageCrop | SanityImageHotspot | Footer | Navigation | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 

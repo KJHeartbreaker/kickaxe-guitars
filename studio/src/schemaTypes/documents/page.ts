@@ -1,53 +1,67 @@
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 import {DocumentIcon} from '@sanity/icons/Document'
 
 /**
- * Page schema.  Define and edit the fields for the 'page' content type.
+ * Generic page built from the shared page-builder blocks.
  * Learn more: https://www.sanity.io/docs/studio/schema-types
  */
+
+/** The blocks available to the page builder, shared by `page` and `homePage`. */
+export const pageBuilderMembers = [
+  defineArrayMember({type: 'heroSection'}),
+  defineArrayMember({type: 'richTextSection'}),
+  defineArrayMember({type: 'mediaText'}),
+  defineArrayMember({type: 'gallery'}),
+  defineArrayMember({type: 'dividerImage'}),
+  defineArrayMember({type: 'marquee'}),
+  defineArrayMember({type: 'accordionList'}),
+  defineArrayMember({type: 'contactFormSection'}),
+  defineArrayMember({type: 'columnsSection'}),
+  defineArrayMember({type: 'callToAction'}),
+]
 
 export const page = defineType({
   name: 'page',
   title: 'Page',
   type: 'document',
   icon: DocumentIcon,
+  groups: [
+    {name: 'content', title: 'Content', default: true},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
     defineField({
       name: 'name',
       title: 'Name',
       type: 'string',
+      description: 'Internal name / page title.',
+      group: 'content',
       validation: (Rule) => Rule.required(),
     }),
-
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      validation: (Rule) => Rule.required(),
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
-    }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
+      group: 'content',
+      options: {source: 'name', maxLength: 96},
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
+      name: 'hasTransparentHeader',
+      title: 'Transparent header',
+      type: 'boolean',
+      description: 'Let the hero show through the header at the top of the page.',
+      group: 'content',
+      initialValue: false,
     }),
     defineField({
       name: 'pageBuilder',
       title: 'Page builder',
       type: 'array',
-      of: [{type: 'callToAction'}, {type: 'infoSection'}],
+      group: 'content',
+      of: pageBuilderMembers,
       options: {
         insertMenu: {
-          // Configure the "Add Item" menu to display a thumbnail preview of the content type. https://www.sanity.io/docs/studio/array-type#efb1fe03459d
           views: [
             {
               name: 'grid',
@@ -58,5 +72,12 @@ export const page = defineType({
         },
       },
     }),
+    defineField({name: 'seo', title: 'SEO & Social', type: 'seo', group: 'seo'}),
   ],
+  preview: {
+    select: {title: 'name', slug: 'slug.current'},
+    prepare({title, slug}) {
+      return {title: title || 'Untitled page', subtitle: slug ? `/${slug}` : 'No slug set'}
+    },
+  },
 })
