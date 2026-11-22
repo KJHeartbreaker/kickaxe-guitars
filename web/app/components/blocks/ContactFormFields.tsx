@@ -1,8 +1,29 @@
 'use client'
 
-import {useActionState} from 'react'
+import Script from 'next/script'
+import {startTransition, useActionState, useState} from 'react'
 
 import {submitContactForm, type ContactFormState} from '@/app/actions'
+
+/** reCAPTCHA v3 (invisible). Off when the site key isn't set, e.g. in local development. */
+const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready(callback: () => void): void
+      execute(siteKey: string, options: {action: string}): Promise<string>
+    }
+  }
+}
+
+function getRecaptchaToken(siteKey: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const grecaptcha = window.grecaptcha
+    if (!grecaptcha) return reject(new Error('reCAPTCHA has not loaded'))
+    grecaptcha.ready(() => grecaptcha.execute(siteKey, {action: 'contact'}).then(resolve, reject))
+  })
+}
 
 const fieldClass =
   'min-h-12 w-full border border-line bg-ink px-4 py-3 text-bone placeholder:text-muted focus:border-orange focus:outline-none'
@@ -19,6 +40,27 @@ export default function ContactFormFields({
     status: 'idle',
   })
 
+  const [checking, setChecking] = useState(false)
+  const [clientError, setClientError] = useState('')
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    if (!recaptchaSiteKey) return // no reCAPTCHA configured: let the form submit normally
+    event.preventDefault()
+    const form = event.currentTarget
+    const data = new FormData(form)
+    setClientError('')
+    setChecking(true)
+    try {
+      data.set('recaptchaToken', await getRecaptchaToken(recaptchaSiteKey))
+    } catch {
+      setClientError('Sorry, we couldn’t check that you’re not a robot. Please reload the page or call the shop.')
+      setChecking(false)
+      return
+    }
+    setChecking(false)
+    startTransition(() => action(data))
+  }
+
   if (state.status === 'success') {
     return (
       <p role="status" className="font-display text-3xl font-extrabold uppercase">
@@ -31,7 +73,11 @@ export default function ContactFormFields({
   const typed = state.status === 'error' ? (state.values ?? {}) : {}
 
   return (
-    <form action={action} noValidate className="grid gap-5 sm:grid-cols-2">
+    <>
+    {recaptchaSiteKey && (
+      <Script src={`https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`} />
+    )}
+    <form action={action} onSubmit={onSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
       <div className="flex flex-col gap-2">
         <label htmlFor="cf-name" className={labelClass}>
           Name
@@ -66,15 +112,23 @@ export default function ContactFormFields({
         <input id="cf-company" name="company" tabIndex={-1} autoComplete="off" />
       </div>
       <div className="flex flex-wrap items-center gap-4 sm:col-span-2">
-        <button type="submit" disabled={pending} className="btn-primary disabled:opacity-60">
-          {pending ? 'Sending…' : submitLabel} {!pending && <span aria-hidden="true">→</span>}
+        <button type="submit" disabled={pending || checking} className="btn-primary disabled:opacity-60">
+          {pending || checking ? 'Sending…' : submitLabel} {!(pending || checking) && <span aria-hidden="true">→</span>}
         </button>
-        {state.status === 'error' && state.message && (
+        {(clientError || (state.status === 'error' && state.message)) && (
           <p role="alert" className="text-sm text-orange">
-            {state.message}
+            {clientError || (state.status === 'error' ? state.message : '')}
+          </p>
+        )}
+        {recaptchaSiteKey && (
+          <p className="w-full text-xs text-muted">
+            Protected by reCAPTCHA. Google’s{' '}
+            <a href="https://policies.google.com/privacy" className="underline">Privacy Policy</a> and{' '}
+            <a href="https://policies.google.com/terms" className="underline">Terms of Service</a> apply.
           </p>
         )}
       </div>
     </form>
+    </>
   )
 }

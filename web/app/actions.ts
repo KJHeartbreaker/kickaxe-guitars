@@ -40,6 +40,45 @@ async function contactRecipient() {
   return email || null
 }
 
+/** Minimum reCAPTCHA v3 score (0 = bot, 1 = human) to let a message through. */
+const recaptchaMinScore = 0.5
+
+/**
+ * Checks the token the form got from reCAPTCHA v3. Only runs when
+ * NEXT_PUBLIC_RECAPTCHA_SITE_KEY is set; then RECAPTCHA_SECRET_KEY is required.
+ */
+async function passesRecaptcha(token: string): Promise<boolean> {
+  const secret = process.env.RECAPTCHA_SECRET_KEY
+  if (!secret) {
+    console.error('Contact form: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is set but RECAPTCHA_SECRET_KEY is not.')
+    return false
+  }
+  if (!token) return false
+  try {
+    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({secret, response: token}),
+      cache: 'no-store',
+    })
+    const result: {success?: boolean; score?: number; action?: string; 'error-codes'?: string[]} =
+      await res.json()
+    if (!result.success || result.action !== 'contact' || (result.score ?? 0) < recaptchaMinScore) {
+      console.warn('Contact form: reCAPTCHA rejected a submission', {
+        success: result.success,
+        score: result.score,
+        action: result.action,
+        errors: result['error-codes'],
+      })
+      return false
+    }
+    return true
+  } catch (error) {
+    console.error('Contact form: reCAPTCHA check failed', error)
+    return false
+  }
+}
+
 /**
  * Contact form submission.
  *
@@ -47,7 +86,8 @@ async function contactRecipient() {
  * to the shop through Resend. Reply goes straight to the sender.
  *
  * Env: RESEND_API_KEY (required to send), CONTACT_FORM_FROM (a sender on a
- * domain verified in Resend), CONTACT_FORM_TO (optional, see above).
+ * domain verified in Resend), CONTACT_FORM_TO (optional, see above), and
+ * NEXT_PUBLIC_RECAPTCHA_SITE_KEY + RECAPTCHA_SECRET_KEY (optional spam check).
  */
 export async function submitContactForm(
   _prev: ContactFormState,
@@ -75,6 +115,15 @@ export async function submitContactForm(
   if (Object.keys(fieldErrors).length) return {status: 'error', fieldErrors, values}
 
   const fallback = 'Sorry, your message didn’t send. Please call or email the shop.'
+
+  if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !(await passesRecaptcha(value('recaptchaToken')))) {
+    return {
+      status: 'error',
+      message: 'Sorry, we couldn’t confirm you’re not a robot. Please call or email the shop.',
+      values,
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.CONTACT_FORM_FROM
   const to = await contactRecipient().catch(() => null)
