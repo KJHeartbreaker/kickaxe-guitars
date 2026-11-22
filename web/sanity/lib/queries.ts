@@ -78,7 +78,8 @@ const pageBuilderFields = /* groq */ `
       columns[]{..., content${portableTextFields}}
     },
     _type == "contactFormSection" => {
-      intro${portableTextFields}
+      intro${portableTextFields},
+      "shopInfo": *[_type == "settings"][0].shopInfo{phone, email}
     },
     _type == "callToAction" => {
       body${portableTextFields},

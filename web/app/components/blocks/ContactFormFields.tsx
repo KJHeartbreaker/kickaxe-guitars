@@ -28,6 +28,7 @@ export default function ContactFormFields({
   }
 
   const error = (name: string) => state.status === 'error' && state.fieldErrors?.[name]
+  const typed = state.status === 'error' ? (state.values ?? {}) : {}
 
   return (
     <form action={action} noValidate className="grid gap-5 sm:grid-cols-2">
@@ -35,27 +36,28 @@ export default function ContactFormFields({
         <label htmlFor="cf-name" className={labelClass}>
           Name
         </label>
-        <input id="cf-name" name="name" autoComplete="name" required className={fieldClass} />
+        <input id="cf-name" name="name" defaultValue={typed.name} autoComplete="name" required maxLength={100} className={fieldClass} />
         {error('name') && <p className="text-sm text-orange">{error('name')}</p>}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="cf-phone" className={labelClass}>
           Phone <span className="normal-case tracking-normal">(optional)</span>
         </label>
-        <input id="cf-phone" name="phone" type="tel" autoComplete="tel" className={fieldClass} />
+        <input id="cf-phone" name="phone" defaultValue={typed.phone} type="tel" autoComplete="tel" maxLength={40} className={fieldClass} />
+        {error('phone') && <p className="text-sm text-orange">{error('phone')}</p>}
       </div>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <label htmlFor="cf-email" className={labelClass}>
           Email
         </label>
-        <input id="cf-email" name="email" type="email" autoComplete="email" required className={fieldClass} />
+        <input id="cf-email" name="email" defaultValue={typed.email} type="email" autoComplete="email" required maxLength={200} className={fieldClass} />
         {error('email') && <p className="text-sm text-orange">{error('email')}</p>}
       </div>
       <div className="flex flex-col gap-2 sm:col-span-2">
         <label htmlFor="cf-message" className={labelClass}>
           Message
         </label>
-        <textarea id="cf-message" name="message" rows={5} required className={fieldClass} />
+        <textarea id="cf-message" name="message" defaultValue={typed.message} rows={5} required maxLength={5000} className={fieldClass} />
         {error('message') && <p className="text-sm text-orange">{error('message')}</p>}
       </div>
       {/* Honeypot: hidden from people, often filled in by bots. */}
@@ -65,7 +67,7 @@ export default function ContactFormFields({
       </div>
       <div className="flex flex-wrap items-center gap-4 sm:col-span-2">
         <button type="submit" disabled={pending} className="btn-primary disabled:opacity-60">
-          {pending ? 'Sending…' : submitLabel}
+          {pending ? 'Sending…' : submitLabel} {!pending && <span aria-hidden="true">→</span>}
         </button>
         {state.status === 'error' && state.message && (
           <p role="alert" className="text-sm text-orange">

@@ -3,7 +3,8 @@ import {EnvelopeIcon} from '@sanity/icons/Envelope'
 
 /**
  * Renders the site contact form, with editable surrounding copy.
- * The form fields and submission are handled by the front-end component.
+ * The form fields and submission are handled by the front-end component;
+ * messages are emailed to the shop (Resend), with Reply going to the sender.
  */
 
 export const contactFormSection = defineType({
@@ -15,10 +16,17 @@ export const contactFormSection = defineType({
     defineField({name: 'heading', title: 'Heading', type: 'string'}),
     defineField({name: 'intro', title: 'Intro', type: 'blockContentTextOnly'}),
     defineField({
+      name: 'showContactDetails',
+      title: 'Show the shop phone and email under the intro',
+      type: 'boolean',
+      initialValue: true,
+      description: 'They come from Site Settings → Shop Info.',
+    }),
+    defineField({
       name: 'submitLabel',
       title: 'Submit button label',
       type: 'string',
-      initialValue: 'Send',
+      initialValue: 'Send message',
     }),
     defineField({
       name: 'successMessage',
