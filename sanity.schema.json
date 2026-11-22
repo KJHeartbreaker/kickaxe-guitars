@@ -284,6 +284,13 @@
           },
           "optional": true
         },
+        "showContactDetails": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
         "submitLabel": {
           "type": "objectAttribute",
           "value": {

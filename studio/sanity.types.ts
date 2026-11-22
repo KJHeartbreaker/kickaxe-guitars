@@ -58,6 +58,7 @@ export type ContactFormSection = {
   disabled?: boolean;
   heading?: string;
   intro?: BlockContentTextOnly;
+  showContactDetails?: boolean;
   submitLabel?: string;
   successMessage?: string;
   anchor?: string;
